@@ -28,7 +28,7 @@ begin
   assertEqual(DevLog.thisFunction, vsCurrentFunc, $$plsql_line);
   assertEqual(DevLog.thisProgram, csPackageName||'.'||vsCurrentFunc, $$plsql_line);
   assertEqual(DevLog.thisLine, $$plsql_line, $$plsql_line);
-  assertEqual(DevLog.thisLine, 33, 'lit_33');
+  assertEqual(DevLog.thisLine, 31, 'lit_31');
   DevLog.log('end of A');
 end;
 
@@ -43,7 +43,7 @@ begin
   assertEqual(DevLog.thisFunction, vsCurrentFunc, $$plsql_line);
   assertEqual(DevLog.thisProgram, csPackageName||'.'||vsCurrentFunc, $$plsql_line);
   assertEqual(DevLog.thisLine, $$plsql_line, $$plsql_line);
-  assertEqual(DevLog.thisLine, 48, 'lit_48');
+  assertEqual(DevLog.thisLine, 46, 'lit_46');
   assertEqual(DevLog.callingPackage, csPackageName, $$plsql_line);
   assertEqual(DevLog.callingFunction, vsCallingFunc, $$plsql_line);
   assertEqual(DevLog.callingProgram, csPackageName||'.'||vsCallingFunc, $$plsql_line);
@@ -63,7 +63,7 @@ begin
   assertEqual(DevLog.thisPackage, csPackageName, $$plsql_line);
   assertEqual(DevLog.thisFunction, vsCurrentFunc, $$plsql_line);
   assertEqual(DevLog.thisLine, $$plsql_line, $$plsql_line);
-  assertEqual(DevLog.thisLine, 68, 'lit_68');
+  assertEqual(DevLog.thisLine, 66, 'lit_66');
   assertEqual(DevLog.thisProgram, csPackageName||'.'||vsCurrentFunc, $$plsql_line);
   assertEqual(DevLog.callingPackage, csPackageName, $$plsql_line);
   assertEqual(DevLog.callingFunction, vsCallingFunc, $$plsql_line);

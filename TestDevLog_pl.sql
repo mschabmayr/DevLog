@@ -12,6 +12,7 @@ DevLog.log('testing', 'for', 'first', 'user', DevLog.toChar(true));
 MicAll.InitGlobals('C5', 'SZ', 'END', 'MIC-CUS1', 'EECHNICUS');
 DevLog.log('testing', 'for', 'second', 'user', DevLog.toChar(true));
 TestDevLog.testA;
+DevLog.log('Text1', 'Text2', 'Text3', 'Text4', 'Text5');
 --pl(utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(1)));
 /*
 pl($$plsql_line||': '||DevLog.thisProgram);

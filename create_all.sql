@@ -20,3 +20,11 @@ start "DevLog.pks"
 start "DevLog.pkb"
 start "TestDevLog.pks"
 start "TestDevLog.pkb"
+
+/*
+How to log messages:
+DevLog.log('Text1', 'Text2', 'Text3', 'Text4', 'Text5');
+
+How to select logs:
+select * from DevLogView;
+*/

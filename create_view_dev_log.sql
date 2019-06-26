@@ -29,4 +29,5 @@ dlgtext16, dlgtext17, dlgtext18, dlgtext19, dlgtext20,
 dlmcallstack
 from dev_log
 left outer join dev_log_meta on dlgsid = dlmdlgsid
-left outer join DevLogValView on dlgsid = dlvdlgsid;
+left outer join DevLogValView on dlgsid = dlvdlgsid
+order by dlgsid desc;
