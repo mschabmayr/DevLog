@@ -204,6 +204,7 @@ begin
   vRecDevLogMeta.dlmcallstack   := dbms_utility.format_call_stack;
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
+  commit;
 end log;
 
 end DevLog;
