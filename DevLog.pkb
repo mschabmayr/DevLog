@@ -171,6 +171,7 @@ procedure log(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null)
 is
+  pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
   vRecDevLogMeta TRecDevLogMeta;
 begin
