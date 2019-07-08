@@ -1,7 +1,13 @@
 -- project: DevLog
 -- file: create_all.sql
 -- author: Martin Schabmayr
--- last change: 2019-05-16 07:00
+-- last change: 2019-07-08 16:30
+
+/*
+NOTE: Pull this file into sqldeveloper and execute all (hit F5)
+Don't copy the statements to some other file, because the paths are relative in: start "<path>"
+*/
+
 
 drop package TestDevLog;
 drop package DevLog;
