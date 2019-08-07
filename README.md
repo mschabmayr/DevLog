@@ -16,7 +16,7 @@ This tool can be used to quickly debug legacy code. Current values can be logged
 
 
 ## How to use it
-- include a logging line in PL/SQL and execute it
+- include a logging line in PL/SQL code, like a script or a compiled package function/procedure, and execute it
 
 ```
 begin
