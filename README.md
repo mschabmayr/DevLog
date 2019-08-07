@@ -20,11 +20,11 @@ This tool can be used to quickly debug legacy code. Current values can be logged
 
 ```
 begin
-  -- start of the example procedure
+  -- start of example procedure
   ...
   DevLog.log('value1', 1234, sysdate, DevLog.toChar(true)); -- up to 20 parameters
   ...
-  -- end of the example procedure
+  -- end of example procedure
 end;
 ```
 
