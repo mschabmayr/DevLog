@@ -2,9 +2,62 @@ create or replace package body DevLog is
 -- project: DevLog
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
--- last change: 2019-05-16 07:00
+-- last change: 2019-08-22 13:00
 
 procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
+
+procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
+is
+begin
+  if psText2 is not null then rsText := rsText||', '||psText2; end if;
+end concatIfNotNull;
+
+procedure pl(
+  psText1  in varchar2,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null)
+is
+  vsLine varchar2(4000);
+begin
+  vsLine := psText1;
+  concatIfNotNull(vsLine, psText2);
+  concatIfNotNull(vsLine, psText3);
+  concatIfNotNull(vsLine, psText4);
+  concatIfNotNull(vsLine, psText5);
+  concatIfNotNull(vsLine, psText6);
+  concatIfNotNull(vsLine, psText7);
+  concatIfNotNull(vsLine, psText8);
+  concatIfNotNull(vsLine, psText9);
+  concatIfNotNull(vsLine, psText10);
+  concatIfNotNull(vsLine, psText11);
+  concatIfNotNull(vsLine, psText12);
+  concatIfNotNull(vsLine, psText13);
+  concatIfNotNull(vsLine, psText14);
+  concatIfNotNull(vsLine, psText15);
+  concatIfNotNull(vsLine, psText16);
+  concatIfNotNull(vsLine, psText17);
+  concatIfNotNull(vsLine, psText18);
+  concatIfNotNull(vsLine, psText19);
+  concatIfNotNull(vsLine, psText20);
+  dbms_output.put_line(vsLine);
+end pl;
 
 function toChar(pbValue in boolean) return varchar2
 is

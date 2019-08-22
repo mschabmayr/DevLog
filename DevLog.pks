@@ -2,7 +2,7 @@ create or replace package DevLog authid current_user is
 -- project: DevLog
 -- file: DevLog.pks
 -- author: Martin Schabmayr
--- last change: 2019-05-16 07:00
+-- last change: 2019-08-22 13:00
 
 type TRecDevLog is record (
   dlgsid     dev_log.dlgsid%type,
@@ -52,6 +52,28 @@ type TRecDevLogMeta is record (
 );
 
 procedure pl(psLine in varchar2);
+procedure pl(
+  psText1  in varchar2,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null);
+
 function toChar(pbValue in boolean) return varchar2;
 
 function thisProgram(pnDepth in integer default 1) return varchar2;
