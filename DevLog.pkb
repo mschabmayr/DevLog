@@ -4,15 +4,13 @@ create or replace package body DevLog is
 -- author: Martin Schabmayr
 -- last change: 2019-08-22 13:00
 
-procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
-
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
 begin
   if psText2 is not null then rsText := rsText||', '||psText2; end if;
 end concatIfNotNull;
 
-procedure pl(
+function concatText(
   psText1  in varchar2,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
@@ -32,31 +30,80 @@ procedure pl(
   psText17 in varchar2 default null,
   psText18 in varchar2 default null,
   psText19 in varchar2 default null,
+  psText20 in varchar2 default null) return varchar2
+is
+  vsText varchar2(4000);
+begin
+  vsText := psText1;
+  concatIfNotNull(vsText, psText2);
+  concatIfNotNull(vsText, psText3);
+  concatIfNotNull(vsText, psText4);
+  concatIfNotNull(vsText, psText5);
+  concatIfNotNull(vsText, psText6);
+  concatIfNotNull(vsText, psText7);
+  concatIfNotNull(vsText, psText8);
+  concatIfNotNull(vsText, psText9);
+  concatIfNotNull(vsText, psText10);
+  concatIfNotNull(vsText, psText11);
+  concatIfNotNull(vsText, psText12);
+  concatIfNotNull(vsText, psText13);
+  concatIfNotNull(vsText, psText14);
+  concatIfNotNull(vsText, psText15);
+  concatIfNotNull(vsText, psText16);
+  concatIfNotNull(vsText, psText17);
+  concatIfNotNull(vsText, psText18);
+  concatIfNotNull(vsText, psText19);
+  concatIfNotNull(vsText, psText20);
+  return vsText;
+end concatText;
+
+procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
+
+procedure pl(
+  psText1  in varchar2,
+  psText2  in varchar2,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
   psText20 in varchar2 default null)
 is
-  vsLine varchar2(4000);
 begin
-  vsLine := psText1;
-  concatIfNotNull(vsLine, psText2);
-  concatIfNotNull(vsLine, psText3);
-  concatIfNotNull(vsLine, psText4);
-  concatIfNotNull(vsLine, psText5);
-  concatIfNotNull(vsLine, psText6);
-  concatIfNotNull(vsLine, psText7);
-  concatIfNotNull(vsLine, psText8);
-  concatIfNotNull(vsLine, psText9);
-  concatIfNotNull(vsLine, psText10);
-  concatIfNotNull(vsLine, psText11);
-  concatIfNotNull(vsLine, psText12);
-  concatIfNotNull(vsLine, psText13);
-  concatIfNotNull(vsLine, psText14);
-  concatIfNotNull(vsLine, psText15);
-  concatIfNotNull(vsLine, psText16);
-  concatIfNotNull(vsLine, psText17);
-  concatIfNotNull(vsLine, psText18);
-  concatIfNotNull(vsLine, psText19);
-  concatIfNotNull(vsLine, psText20);
-  dbms_output.put_line(vsLine);
+  dbms_output.put_line(concatText(
+    psText1,
+    psText2,
+    psText3,
+    psText4,
+    psText5,
+    psText6,
+    psText7,
+    psText8,
+    psText9,
+    psText10,
+    psText11,
+    psText12,
+    psText13,
+    psText14,
+    psText15,
+    psText16,
+    psText17,
+    psText18,
+    psText19,
+    psText20
+  ));
 end pl;
 
 function toChar(pbValue in boolean) return varchar2

@@ -51,10 +51,33 @@ type TRecDevLogMeta is record (
   dlmcredate     dev_log_meta.dlmcredate%type
 );
 
+procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2);
+function concatText(
+  psText1  in varchar2,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null) return varchar2;
+
 procedure pl(psLine in varchar2);
 procedure pl(
   psText1  in varchar2,
-  psText2  in varchar2 default null,
+  psText2  in varchar2,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
