@@ -6,7 +6,7 @@ This tool can be used to quickly debug legacy code. Current values can be logged
 ## Features
 - log up to 20 variables / values with one line
 - oracle program stacktrace is automatically available for each line
-- log session / global variables are automatically for each line
+- log session / global variables are automatically available for each line
 - logging of variables can be extended for a specific environment
 - view of the log lines can be extended for a specific use
 
