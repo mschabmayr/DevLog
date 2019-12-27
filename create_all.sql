@@ -1,3 +1,4 @@
+
 -- project: DevLog
 -- file: create_all.sql
 -- author: Martin Schabmayr
