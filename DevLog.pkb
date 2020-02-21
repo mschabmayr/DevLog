@@ -2,7 +2,7 @@ create or replace package body DevLog is
 -- project: DevLog
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
--- last change: 2019-08-22 13:00
+-- last change: 2020-02-21 08:00
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
@@ -240,12 +240,12 @@ end addValue;
 procedure logGlobals(psLogSid in integer)
 is
 begin
-  addValue(psLogSid, 'company', MicAll.getCompany);
-  addValue(psLogSid, 'plant', MicAll.getPlant);
+  addValue(psLogSid, 'company',  MicAll.getCompany);
+  addValue(psLogSid, 'plant',    MicAll.getPlant);
   addValue(psLogSid, 'language', MicAll.getSpr);
-  addValue(psLogSid, 'system', MicAll.getSystem);
-  addValue(psLogSid, 'user', MicAll.getDatabaseUser);
-  addValue(psLogSid, 'country', MicAll.getCountry);
+  addValue(psLogSid, 'system',   MicAll.getSystem);
+  addValue(psLogSid, 'user',     MicAll.getDatabaseUser);
+  addValue(psLogSid, 'country',  MicAll.getCountry);
   addValue(psLogSid, 'currency', MicAll.getCurrency);
 end logGlobals;
 
@@ -297,10 +297,10 @@ begin
   vRecDevLog.dlgtext20 := psText20;
   insertDevLog(vRecDevLog);
   vRecDevLogMeta.dlmdlgsid      := vRecDevLog.dlgsid;
-  vRecDevLogMeta.dlmprogram     := thisProgram(pnDepth=>'2'); -- skip log function
-  vRecDevLogMeta.dlmprogramline := thisLine(pnDepth=>'2');
-  vRecDevLogMeta.dlmcaller      := thisProgram(pnDepth=>'3');
-  vRecDevLogMeta.dlmcallerline  := thisLine(pnDepth=>'3');
+  vRecDevLogMeta.dlmprogram     := thisProgram(pnDepth=>2); -- skip log function
+  vRecDevLogMeta.dlmprogramline := thisLine(pnDepth=>2);
+  vRecDevLogMeta.dlmcaller      := thisProgram(pnDepth=>3);
+  vRecDevLogMeta.dlmcallerline  := thisLine(pnDepth=>3);
   vRecDevLogMeta.dlmcallstack   := dbms_utility.format_call_stack;
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
