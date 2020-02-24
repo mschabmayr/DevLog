@@ -4,8 +4,6 @@ create or replace package body DevLog is
 -- author: Martin Schabmayr
 -- last change: 2020-02-21 17:00
 
-cnCallerDepth constant number := 2; -- 1: this line, 2: calling line
-
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
 begin

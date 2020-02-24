@@ -4,6 +4,8 @@ create or replace package DevLog authid current_user is
 -- author: Martin Schabmayr
 -- last change: 2020-02-21 17:00
 
+cnCallerDepth constant number := 2; -- 1: this line, 2: calling line
+
 type TRecDevLog is record (
   dlgsid     dev_log.dlgsid%type,
   dlgtext1   dev_log.dlgtext1%type,
@@ -75,6 +77,7 @@ function concatText(
   psText20 in varchar2 default null) return varchar2;
 
 procedure pl(psLine in varchar2);
+
 procedure pl(
   psText1  in varchar2,
   psText2  in varchar2,
@@ -84,8 +87,8 @@ procedure pl(
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
-  psText10 in varchar2 default null,
   psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
   psText11 in varchar2 default null,
   psText12 in varchar2 default null,
   psText13 in varchar2 default null,
@@ -132,11 +135,7 @@ procedure log(
   pnDepth  in number   default cnCallerDepth
 );
 
-procedure hi
-is
-begin
-  log('hi', cnCallerDepth);
-end hi;
+procedure hi;
 
 end DevLog;
 /
