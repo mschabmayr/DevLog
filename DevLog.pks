@@ -97,6 +97,7 @@ procedure pl(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null);
 
+function tc(pbValue in boolean) return varchar2;
 function toChar(pbValue in boolean) return varchar2;
 
 function thisProgram(pnDepth in integer default 1) return varchar2;

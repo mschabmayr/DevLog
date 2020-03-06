@@ -106,6 +106,12 @@ begin
   ));
 end pl;
 
+function tc(pbValue in boolean) return varchar2
+is
+begin
+  return toChar(pbValue);
+end tc;
+
 function toChar(pbValue in boolean) return varchar2
 is
 begin
