@@ -153,7 +153,11 @@ procedure log(
   pnDepth  in number   default null
 );
 
+procedure bye;
+procedure ex;
+procedure help;
 procedure hi;
+procedure mark;
 
 end DevLog;
 /
