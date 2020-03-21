@@ -2,21 +2,21 @@ create or replace package body TestDevLog is
 -- project: DevLog
 -- file: TestDevLog.pkb
 -- author: Martin Schabmayr
--- last change: 2019-05-16 07:00
+-- last change: 2020-03-21 10:00
 
 csPackageName varchar2(10) := 'TESTDEVLOG';
 
-procedure assertEqual(psValue1 in varchar2,
-  psValue2 in varchar2,
+procedure assertEqual(psActual in varchar2,
+  psExpected in varchar2,
   psErrorLine in varchar2)
 is
 begin
-if (psValue1 != psValue2)
-  or (psValue1 is null and psValue2 is not null)
-  or (psValue1 is not null and psValue2 is null) then
-  DevLog.pl('Test failed in line: '||psErrorLine||' - value1: '||psValue1||' - value2: '||psValue2);
-end if;
+  if nvl(psActual != psExpected, true) then
+    DevLog.pl('Test failed in line: '||psErrorLine||' - psActual: '||psActual||' - psExpected: '||psExpected);
+  end if;
 end assertEqual;
+
+
 
 procedure testA
 is

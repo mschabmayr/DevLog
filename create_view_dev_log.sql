@@ -1,7 +1,7 @@
 -- project: DevLog
 -- file: create_view_dev_log.sql
 -- author: Martin Schabmayr
--- last change: 2019-05-16 07:00
+-- last change: 2019-03-21 10:00
 
 create or replace view DevLogValView as
 select * from
@@ -21,11 +21,11 @@ select dlgsid,
 dev_log_meta.dlmcaller||':'||dev_log_meta.dlmcallerline caller,
 dev_log_meta.dlmprogram||':'||dev_log_meta.dlmprogramline program,
 dlgtext1, dlgtext2, dlgtext3, dlgtext4, dlgtext5,
-dlvcompany, dlvplant, dlvlanguage, dlvsystem, dlvuser,
-dlvcountry, dlvcurrency,
 dlgtext6, dlgtext7, dlgtext8, dlgtext9, dlgtext10,
 dlgtext11, dlgtext12, dlgtext13, dlgtext14, dlgtext15,
 dlgtext16, dlgtext17, dlgtext18, dlgtext19, dlgtext20,
+dlvcompany, dlvplant, dlvlanguage, dlvsystem, dlvuser,
+dlvcountry, dlvcurrency,
 dlmcallstack
 from dev_log
 left outer join dev_log_meta on dlgsid = dlmdlgsid
