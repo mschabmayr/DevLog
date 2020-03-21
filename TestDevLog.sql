@@ -10,3 +10,5 @@ select * from dev_log_meta;
 select * from DevLogValView;
 select * from DevLogView;
 desc DevLogView;
+
+-- end

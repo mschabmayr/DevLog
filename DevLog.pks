@@ -2,7 +2,11 @@ create or replace package DevLog authid current_user is
 -- project: DevLog
 -- file: DevLog.pks
 -- author: Martin Schabmayr
--- last change: 2019-08-22 13:00
+-- last change: 2020-03-21 10:00
+
+-- line depth = 1: this line
+-- line depth = 2: calling line
+cnCallerDepth constant number := 2;
 
 type TRecDevLog is record (
   dlgsid     dev_log.dlgsid%type,
@@ -52,6 +56,7 @@ type TRecDevLogMeta is record (
 );
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2);
+
 function concatText(
   psText1  in varchar2,
   psText2  in varchar2 default null,
@@ -74,7 +79,22 @@ function concatText(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null) return varchar2;
 
+procedure clear;
+
+function format(psPattern in varchar2,
+                psParam1  in varchar2 default null,
+                psParam2  in varchar2 default null,
+                psParam3  in varchar2 default null,
+                psParam4  in varchar2 default null,
+                psParam5  in varchar2 default null,
+                psParam6  in varchar2 default null,
+                psParam7  in varchar2 default null,
+                psParam8  in varchar2 default null,
+                psParam9  in varchar2 default null,
+                psParam10 in varchar2 default null) return varchar2;
+
 procedure pl(psLine in varchar2);
+
 procedure pl(
   psText1  in varchar2,
   psText2  in varchar2,
@@ -129,8 +149,11 @@ procedure log(
   psText17 in varchar2 default null,
   psText18 in varchar2 default null,
   psText19 in varchar2 default null,
-  psText20 in varchar2 default null
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null
 );
+
+procedure hi;
 
 end DevLog;
 /

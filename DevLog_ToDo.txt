@@ -1,0 +1,4 @@
+
+add log for boolean, combinations
+add fks, cascade delete
+check view displayed col size

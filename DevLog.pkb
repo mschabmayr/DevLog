@@ -2,7 +2,7 @@ create or replace package body DevLog is
 -- project: DevLog
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
--- last change: 2020-02-21 08:00
+-- last change: 2020-03-21 10:00
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
@@ -56,6 +56,40 @@ begin
   concatIfNotNull(vsText, psText20);
   return vsText;
 end concatText;
+
+procedure clear
+is
+begin
+  delete from dev_log_meta;
+  delete from dev_log_val;
+  delete from dev_log;
+end clear;
+
+function format(psPattern in varchar2,
+                psParam1  in varchar2 default null,
+                psParam2  in varchar2 default null,
+                psParam3  in varchar2 default null,
+                psParam4  in varchar2 default null,
+                psParam5  in varchar2 default null,
+                psParam6  in varchar2 default null,
+                psParam7  in varchar2 default null,
+                psParam8  in varchar2 default null,
+                psParam9  in varchar2 default null,
+                psParam10 in varchar2 default null) return varchar2
+is
+begin
+  return utl_lms.format_message(psPattern,
+    psParam1,
+    psParam2,
+    psParam3,
+    psParam4,
+    psParam5,
+    psParam6,
+    psParam7,
+    psParam8,
+    psParam9,
+    psParam10);
+end format;
 
 procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
 
@@ -275,7 +309,8 @@ procedure log(
   psText17 in varchar2 default null,
   psText18 in varchar2 default null,
   psText19 in varchar2 default null,
-  psText20 in varchar2 default null)
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
 is
   pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
@@ -303,15 +338,21 @@ begin
   vRecDevLog.dlgtext20 := psText20;
   insertDevLog(vRecDevLog);
   vRecDevLogMeta.dlmdlgsid      := vRecDevLog.dlgsid;
-  vRecDevLogMeta.dlmprogram     := thisProgram(pnDepth=>2); -- skip log function
-  vRecDevLogMeta.dlmprogramline := thisLine(pnDepth=>2);
-  vRecDevLogMeta.dlmcaller      := thisProgram(pnDepth=>3);
-  vRecDevLogMeta.dlmcallerline  := thisLine(pnDepth=>3);
+  vRecDevLogMeta.dlmprogram     := thisProgram(pnDepth => nvl(pnDepth+1, cnCallerDepth)); -- skip log function
+  vRecDevLogMeta.dlmprogramline := thisLine(   pnDepth => nvl(pnDepth+1, cnCallerDepth));
+  vRecDevLogMeta.dlmcaller      := thisProgram(pnDepth => nvl(pnDepth+2, cnCallerDepth+1));
+  vRecDevLogMeta.dlmcallerline  := thisLine(   pnDepth => nvl(pnDepth+2, cnCallerDepth+1));
   vRecDevLogMeta.dlmcallstack   := dbms_utility.format_call_stack;
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
   commit;
 end log;
+
+procedure bye  is begin log(psText1=>'bye',  pnDepth=>cnCallerDepth); end;
+procedure ex   is begin log(psText1=>'ex',   pnDepth=>cnCallerDepth); end;
+procedure help is begin log(psText1=>'help', pnDepth=>cnCallerDepth); end;
+procedure hi   is begin log(psText1=>'hi',   pnDepth=>cnCallerDepth); end;
+procedure mark is begin log(psText1=>'mark', pnDepth=>cnCallerDepth); end;
 
 end DevLog;
 /

@@ -1,4 +1,0 @@
-added hi
--> to test, is hi / log depth ok?
-
-add hi, bye, start, end, ex, exception
