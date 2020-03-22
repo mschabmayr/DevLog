@@ -157,6 +157,7 @@ procedure bye;
 procedure ex;
 procedure help;
 procedure hi;
+procedure impossible;
 procedure mark;
 
 end DevLog;

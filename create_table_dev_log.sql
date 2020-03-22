@@ -39,7 +39,9 @@ create table dev_log_val (
   dlvvalue   varchar2(4000),
   dlvcreuser varchar2(4000),
   dlvcredate date,
-  constraint pk_dev_log_val primary key(dlvsid)
+  constraint pk_dev_log_val primary key(dlvsid),
+  constraint fk1_dev_log_val foreign key (dlvdlgsid) references dev_log
+    on delete cascade
 );
 
 create sequence dev_log_val_seq minvalue 1 maxvalue 999999999999999999999999999 increment by 1 start with 1 cache 20 noorder nocycle;
@@ -54,7 +56,9 @@ create table dev_log_meta (
   dlmcallstack   varchar2(4000),
   dlmcreuser     varchar2(4000),
   dlmcredate     date,
-  constraint pk_dev_log_meta primary key(dlmsid)
+  constraint pk_dev_log_meta primary key(dlmsid),
+  constraint fk1_dev_log_meta foreign key (dlmdlgsid) references dev_log
+    on delete cascade
 );
 
 create sequence dev_log_meta_seq minvalue 1 maxvalue 999999999999999999999999999 increment by 1 start with 1 cache 20 noorder nocycle;

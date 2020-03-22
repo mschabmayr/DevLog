@@ -69,6 +69,11 @@ begin
   assertEqual(DevLog.callingFunction, vsCallingFunc, $$plsql_line);
   assertEqual(DevLog.callingProgram, csPackageName||'.'||vsCallingFunc, $$plsql_line);
   DevLog.hi();
+  DevLog.bye();
+  DevLog.mark();
+  DevLog.ex();
+  DevLog.help();
+  DevLog.impossible();
   DevLog.log('end of C');
 end;
 
@@ -98,9 +103,8 @@ begin
   open curLog(psText1, psProgram, psLine, psCaller, psCallerLine);
   fetch curLog into rowLog;
   if curLog%notfound then
-    DevLog.pl('Test failed. Log not found: '||psText1||'/'||psProgram||'/'||psLine
-      ||'/'||psCaller||'/'||psCallerLine);
-    DevLog.pl(DevLog.format('Test failed. Log not found: %s/%s/%s/%s/%s', psText1, psProgram, psLine, psCaller, psCallerLine));
+    DevLog.pl(DevLog.format('Test failed. Log not found: %s/%s/%s/%s/%s',
+      psText1, psProgram, psLine, psCaller, psCallerLine));
   end if;
   close curLog;
 end assertLogExists;

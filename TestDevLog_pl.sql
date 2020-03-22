@@ -15,10 +15,15 @@ DevLog.log('testing', 'for', 'second', 'user', DevLog.toChar(true));
 TestDevLog.testA;
 DevLog.log('Text1', 'Text2', 'Text3', 'Text4', 'Text5');
 TestDevLog.assertLogExists('start of B', 'TESTDEVLOG.TESTB', 40, 'TESTDEVLOG.TESTA', 26);
+TestDevLog.assertLogExists('end of B',   'TESTDEVLOG.TESTB', 50, 'TESTDEVLOG.TESTA', 26);
 TestDevLog.assertLogExists('start of C', 'TESTDEVLOG.TESTC', 58, 'TESTDEVLOG.TESTB', 41);
-TestDevLog.assertLogExists('end of C', 'TESTDEVLOG.TESTC', 72, 'TESTDEVLOG.TESTB', 41);
-TestDevLog.assertLogExists('end of B', 'TESTDEVLOG.TESTB', 50, 'TESTDEVLOG.TESTA', 26);
-TestDevLog.assertLogExists('hi');
+TestDevLog.assertLogExists('hi',         'TESTDEVLOG.TESTC', 71, 'TESTDEVLOG.TESTB', 41);
+TestDevLog.assertLogExists('bye',        'TESTDEVLOG.TESTC', 72, 'TESTDEVLOG.TESTB', 41);
+TestDevLog.assertLogExists('mark',       'TESTDEVLOG.TESTC', 73, 'TESTDEVLOG.TESTB', 41);
+TestDevLog.assertLogExists('ex',         'TESTDEVLOG.TESTC', 74, 'TESTDEVLOG.TESTB', 41);
+TestDevLog.assertLogExists('help',       'TESTDEVLOG.TESTC', 75, 'TESTDEVLOG.TESTB', 41);
+TestDevLog.assertLogExists('impossible', 'TESTDEVLOG.TESTC', 76, 'TESTDEVLOG.TESTB', 41);
+TestDevLog.assertLogExists('end of C',   'TESTDEVLOG.TESTC', 77, 'TESTDEVLOG.TESTB', 41);
 --pl(utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(1)));
 /*
 pl($$plsql_line||': '||DevLog.thisProgram);
