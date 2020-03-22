@@ -1,0 +1,960 @@
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  psText3,  psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  psText3,  psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  psText3,  tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  psText3,  tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  tc(pbText3), psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  tc(pbText3), psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  tc(pbText3), tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  psText2,  tc(pbText3), tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), psText3,  psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), psText3,  psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), psText3,  tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), psText3,  tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), tc(pbText3), psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), tc(pbText3), psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), tc(pbText3), tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  psText1  in varchar2 default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(psText1,  tc(pbText2), tc(pbText3), tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  psText3,  psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  psText3,  psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  psText3,  tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  psText3,  tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  tc(pbText3), psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  tc(pbText3), psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  tc(pbText3), tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  psText2  in varchar2 default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), psText2,  tc(pbText3), tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), psText3,  psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), psText3,  psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), psText3,  tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  psText3  in varchar2 default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), psText3,  tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), tc(pbText3), psText4,  psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  psText4  in varchar2 default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), tc(pbText3), psText4,  tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  psText5  in varchar2 default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), tc(pbText3), tc(pbText4), psText5,
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
+procedure log(
+  pbText1  in boolean  default null,
+  pbText2  in boolean  default null,
+  pbText3  in boolean  default null,
+  pbText4  in boolean  default null,
+  pbText5  in boolean  default null,
+  psText6  in varchar2 default null,
+  psText7  in varchar2 default null,
+  psText8  in varchar2 default null,
+  psText9  in varchar2 default null,
+  psText10 in varchar2 default null,
+  psText11 in varchar2 default null,
+  psText12 in varchar2 default null,
+  psText13 in varchar2 default null,
+  psText14 in varchar2 default null,
+  psText15 in varchar2 default null,
+  psText16 in varchar2 default null,
+  psText17 in varchar2 default null,
+  psText18 in varchar2 default null,
+  psText19 in varchar2 default null,
+  psText20 in varchar2 default null,
+  pnDepth  in number   default null)
+is
+begin
+  log(tc(pbText1), tc(pbText2), tc(pbText3), tc(pbText4), tc(pbText5),
+      psText6,  psText7,  psText8,  psText9,  psText10,
+      psText11, psText12, psText13, psText14, psText15,
+      psText16, psText17, psText18, psText19, psText20,
+      cnCallerDepth);
+end;
