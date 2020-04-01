@@ -45,7 +45,7 @@ def getPattern(noParams):
 
 def getParamCode(setting, index):
     if setting == "1":
-        return "  pbText"+str(index)+"  in boolean  default null,\n"
+        return "  pbText"+str(index)+"  in boolean,\n"
     return "  psText"+str(index)+"  in varchar2 default null,\n"
 
 def getFuncCode(setting, index):

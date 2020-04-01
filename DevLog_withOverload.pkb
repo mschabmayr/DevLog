@@ -360,7 +360,7 @@ procedure log(
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -390,7 +390,7 @@ procedure log(
   psText1  in varchar2 default null,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -421,8 +421,8 @@ procedure log(
   psText1  in varchar2 default null,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -451,7 +451,7 @@ end;
 procedure log(
   psText1  in varchar2 default null,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
@@ -482,9 +482,9 @@ end;
 procedure log(
   psText1  in varchar2 default null,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -513,8 +513,8 @@ end;
 procedure log(
   psText1  in varchar2 default null,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
+  pbText3  in boolean,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -544,9 +544,9 @@ end;
 procedure log(
   psText1  in varchar2 default null,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText3  in boolean,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -574,7 +574,7 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
@@ -605,10 +605,10 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -636,9 +636,9 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -667,10 +667,10 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -698,8 +698,8 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
+  pbText2  in boolean,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
@@ -729,10 +729,10 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
+  pbText2  in boolean,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -760,9 +760,9 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
+  pbText2  in boolean,
+  pbText3  in boolean,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -791,10 +791,10 @@ end;
 
 procedure log(
   psText1  in varchar2 default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText2  in boolean,
+  pbText3  in boolean,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -821,7 +821,7 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
@@ -852,11 +852,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -883,10 +883,10 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -914,11 +914,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -945,9 +945,9 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
@@ -976,11 +976,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -1007,10 +1007,10 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
+  pbText3  in boolean,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -1038,11 +1038,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
+  pbText1  in boolean,
   psText2  in varchar2 default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText3  in boolean,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -1069,8 +1069,8 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
@@ -1100,11 +1100,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -1131,10 +1131,10 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -1162,11 +1162,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
   psText3  in varchar2 default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -1193,9 +1193,9 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
@@ -1224,11 +1224,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
+  pbText3  in boolean,
   psText4  in varchar2 default null,
-  pbText5  in boolean  default null,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
@@ -1255,10 +1255,10 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
+  pbText3  in boolean,
+  pbText4  in boolean,
   psText5  in varchar2 default null,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
@@ -1286,11 +1286,11 @@ begin
 end;
 
 procedure log(
-  pbText1  in boolean  default null,
-  pbText2  in boolean  default null,
-  pbText3  in boolean  default null,
-  pbText4  in boolean  default null,
-  pbText5  in boolean  default null,
+  pbText1  in boolean,
+  pbText2  in boolean,
+  pbText3  in boolean,
+  pbText4  in boolean,
+  pbText5  in boolean,
   psText6  in varchar2 default null,
   psText7  in varchar2 default null,
   psText8  in varchar2 default null,
