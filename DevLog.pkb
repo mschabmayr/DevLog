@@ -168,14 +168,14 @@ end tc;
 
 function toChar(pbValue in boolean) return varchar2
 is
+  vsValue varchar2(5) := 'false';
 begin
   if pbValue is null then
-    return 'null';
+    vsValue := 'null';
   elsif pbValue then
-    return 'true';
-  else
-    return 'false';
+    vsValue := 'true';
   end if;
+  return vsValue;
 end toChar;
 
 function thisProgram(pnDepth in integer default cnProgramDepth) return varchar2
@@ -403,7 +403,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -434,7 +434,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -465,7 +465,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -496,7 +496,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -527,7 +527,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -558,7 +558,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -589,7 +589,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -620,7 +620,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -651,7 +651,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -682,7 +682,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -713,7 +713,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -744,7 +744,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -775,7 +775,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -806,7 +806,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -837,7 +837,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -868,7 +868,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -899,7 +899,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -930,7 +930,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -961,7 +961,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -992,7 +992,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1023,7 +1023,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1054,7 +1054,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1085,7 +1085,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1116,7 +1116,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1147,7 +1147,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1178,7 +1178,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1209,7 +1209,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1240,7 +1240,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1271,7 +1271,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1302,7 +1302,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 procedure log(
@@ -1333,7 +1333,7 @@ begin
       psText6,  psText7,  psText8,  psText9,  psText10,
       psText11, psText12, psText13, psText14, psText15,
       psText16, psText17, psText18, psText19, psText20,
-      cnCallerDepth);
+      nvl(pnDepth, cnCallerDepth));
 end;
 
 end DevLog;

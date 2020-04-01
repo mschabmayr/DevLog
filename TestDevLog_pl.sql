@@ -4,6 +4,10 @@ declare
 -- file: TestDevLog_pl.sql
 -- author: Martin Schabmayr
 -- last change: 2020-04-01 09:00
+vsNull varchar2(50);
+vnNull number;
+vdNull date;
+vbNull boolean;
 procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
 begin
 pl('start of DevLog tests');
@@ -38,38 +42,33 @@ TestDevLog.assertLogExists(psText1 => 'impossible', psProgram => 'TESTDEVLOG.TES
 TestDevLog.assertLogExists(psText1 => 'end of C',   psProgram => 'TESTDEVLOG.TESTC', psLine => 77, psCaller => 'TESTDEVLOG.TESTB', psCallerLine => 41);
 --pl(utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(1)));
 DevLog.log(true, false, 'test', true, false, null);
+TestDevLog.assertLogExists(psText1 => 'true',
+                           psText2 => 'false',
+                           psText3 => 'test',
+                           psText4 => 'true',
+                           psText5 => 'false');
 DevLog.log(true, false, 'test', true, false);
 DevLog.log(true, false, 'test', true);
-/*DevLog.log(true, false, null, true, false, null);
-DevLog.log(true, false, null, true, false);
-DevLog.log(true, false, null, true);
-*/
+DevLog.log(true, false, vbNull, true, false, vsNull);
+DevLog.log(true, false, vbNull, true, false);
+DevLog.log(true, false, vbNull, true);
 
---pl(utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(1)));
-DevLog.log(true, false, 'test', true, false, null);
-DevLog.log(true, false, 'test', true, false);
-DevLog.log(true, false, 'test', true);
-/*DevLog.log(true, false, null, true, false, null);
-DevLog.log(true, false, null, true, false);
-DevLog.log(true, false, null, true);
-*/
-/*
-DevLog.log('first', true, null, 'second', false, null);
-DevLog.log(null, 'first', true, null, 'second', false);
-DevLog.log(false, null, 'first', true, null, 'second');
-*/
+DevLog.log('first', true, vbNull, 'second', false, null);
+DevLog.log(vbNull, 'first', true, vbNull, 'second');
+DevLog.log(false, vbNull, 'first', true, vbNull, 'second');
+
 DevLog.log('HelloWorld', 42, true, to_date('1970-01-01', 'yyyy-mm-dd'), 'someStr');
 DevLog.log('someStr', 'HelloWorld', 42, true, to_date('1970-01-01', 'yyyy-mm-dd'));
 DevLog.log(to_date('1970-01-01', 'yyyy-mm-dd'), 'someStr', 'HelloWorld', 42, true);
 DevLog.log(true, to_date('1970-01-01', 'yyyy-mm-dd'), 'someStr', 'HelloWorld', 42);
 DevLog.log(42, true, to_date('1970-01-01', 'yyyy-mm-dd'), 'someStr', 'HelloWorld');
-/*
-DevLog.log('HelloWorld', 42, true, to_date('1970-01-01', 'yyyy-mm-dd'), null);
-DevLog.log(null, 'HelloWorld', 42, true, to_date('1970-01-01', 'yyyy-mm-dd'));
-DevLog.log(to_date('1970-01-01', 'yyyy-mm-dd'), null, 'HelloWorld', 42, true);
-DevLog.log(true, to_date('1970-01-01', 'yyyy-mm-dd'), null, 'HelloWorld', 42);
-DevLog.log(42, true, to_date('1970-01-01', 'yyyy-mm-dd'), null, 'HelloWorld');
-*/
+
+DevLog.log('HelloWorld', 42, true, to_date('1970-01-01', 'yyyy-mm-dd'), vbNull);
+DevLog.log(vbNull, 'HelloWorld', 42, true, to_date('1970-01-01', 'yyyy-mm-dd'));
+DevLog.log(to_date('1970-01-01', 'yyyy-mm-dd'), vbNull, 'HelloWorld', 42, true);
+DevLog.log(true, to_date('1970-01-01', 'yyyy-mm-dd'), vbNull, 'HelloWorld', 42);
+DevLog.log(42, true, to_date('1970-01-01', 'yyyy-mm-dd'), vbNull, 'HelloWorld');
+
 /*
 pl($$plsql_line||': '||DevLog.thisProgram);
 pl($$plsql_line||': '||DevLog.thisPackage);
@@ -80,6 +79,7 @@ pl($$plsql_line||': '||DevLog.callingPackage);
 pl($$plsql_line||': '||DevLog.callingFunction);
 pl($$plsql_line||': '||DevLog.callingLine);
 */
+
 pl('end of DevLog tests');
 --exception when others then pl('ex: '||sqlerrm);
 end;
