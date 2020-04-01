@@ -1,7 +1,7 @@
 -- project: DevLog
 -- file: create_all.sql
 -- author: Martin Schabmayr
--- last change: 2020-03-21 10:00
+-- last change: 2020-04-01 09:00
 
 /*
 NOTE: Pull this file into sqldeveloper and execute all (hit F5).
@@ -26,6 +26,9 @@ start "DevLog.pks"
 start "DevLog.pkb"
 start "TestDevLog.pks"
 start "TestDevLog.pkb"
+
+-- execute tests
+start "TestDevLog_pl.sql"
 
 /*
 How to log messages:

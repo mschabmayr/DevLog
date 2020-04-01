@@ -1,5 +1,5 @@
-outputSpecName = "DevLogCodeGeneration_spec.txt"
-outputBodyName = "DevLogCodeGeneration_body.txt"
+outputSpecName = "DevLog_CodeGeneration_spec.txt"
+outputBodyName = "DevLog_CodeGeneration_body.txt"
 outputSpec = open(outputSpecName, "w")
 outputBody = open(outputBodyName, "w")
 
