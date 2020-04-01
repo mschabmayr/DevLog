@@ -178,7 +178,7 @@ begin
   end if;
 end toChar;
 
-function thisProgram(pnDepth in integer default 1) return varchar2
+function thisProgram(pnDepth in integer default cnProgramDepth) return varchar2
 is
 begin
   return utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(pnDepth+1));
@@ -187,7 +187,7 @@ exception
     return 'unknown';
 end;
 
-function thisPackage(pnDepth in integer default 1) return varchar2
+function thisPackage(pnDepth in integer default cnProgramDepth) return varchar2
 is
   vsSubprogram varchar2(100);
 begin
@@ -198,7 +198,7 @@ begin
   return vsSubprogram;
 end thisPackage;
 
-function thisFunction(pnDepth in integer default 1) return varchar2
+function thisFunction(pnDepth in integer default cnProgramDepth) return varchar2
 is
   vsSubprogram varchar2(100);
 begin
@@ -209,7 +209,7 @@ begin
   return vsSubprogram;
 end thisFunction;
 
-function thisLine(pnDepth in integer default 1) return integer
+function thisLine(pnDepth in integer default cnProgramDepth) return integer
 is
 begin
   return utl_call_stack.unit_line(pnDepth+1);
@@ -221,25 +221,25 @@ end thisLine;
 function callingProgram return varchar2
 is
 begin
-  return thisProgram(pnDepth=>3);
+  return thisProgram(pnDepth=>cnNextCallerDepth);
 end callingProgram;
 
 function callingPackage return varchar2
 is
 begin
-  return thisPackage(pnDepth=>3);
+  return thisPackage(pnDepth=>cnNextCallerDepth);
 end callingPackage;
 
 function callingFunction return varchar2
 is
 begin
-  return thisFunction(pnDepth=>3);
+  return thisFunction(pnDepth=>cnNextCallerDepth);
 end callingFunction;
 
 function callingLine return integer
 is
 begin
-  return thisLine(pnDepth=>3);
+  return thisLine(pnDepth=>cnNextCallerDepth);
 end callingLine;
 
 procedure insertDevLog(rRecDevLog in out TRecDevLog)

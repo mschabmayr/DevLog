@@ -1,3 +1,4 @@
 
 add log for boolean, combinations
+pass depth correctly in gen code
 check view displayed col size

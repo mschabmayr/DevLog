@@ -6,7 +6,9 @@ create or replace package DevLog authid current_user is
 
 -- line depth = 1: this line
 -- line depth = 2: calling line
+cnProgramDepth constant number := 1;
 cnCallerDepth constant number := 2;
+cnNextCallerDepth constant number := 3;
 
 type TRecDevLog is record (
   dlgsid     dev_log.dlgsid%type,
@@ -130,10 +132,10 @@ procedure pl(
 function tc(pbValue in boolean) return varchar2;
 function toChar(pbValue in boolean) return varchar2;
 
-function thisProgram(pnDepth in integer default 1) return varchar2;
-function thisPackage(pnDepth in integer default 1) return varchar2;
-function thisFunction(pnDepth in integer default 1) return varchar2;
-function thisLine(pnDepth in integer default 1) return integer;
+function thisProgram(pnDepth in integer default cnProgramDepth) return varchar2;
+function thisPackage(pnDepth in integer default cnProgramDepth) return varchar2;
+function thisFunction(pnDepth in integer default cnProgramDepth) return varchar2;
+function thisLine(pnDepth in integer default cnProgramDepth) return integer;
 function callingProgram return varchar2;
 function callingPackage return varchar2;
 function callingFunction return varchar2;
