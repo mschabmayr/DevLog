@@ -178,41 +178,41 @@ begin
   return vsValue;
 end toChar;
 
-function thisProgram(pnDepth in integer default cnProgramDepth) return varchar2
+function thisProgram(pnDepth in integer default null) return varchar2
 is
 begin
-  return utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(pnDepth+1));
+  return utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(nvl(pnDepth, cnProgramDepth)+1));
 exception
   when others then
     return 'unknown';
 end;
 
-function thisPackage(pnDepth in integer default cnProgramDepth) return varchar2
+function thisPackage(pnDepth in integer default null) return varchar2
 is
   vsSubprogram varchar2(100);
 begin
-  vsSubprogram := thisProgram(pnDepth=>pnDepth+1);
+  vsSubprogram := thisProgram(pnDepth=>nvl(pnDepth, cnProgramDepth)+1);
   if instr(vsSubprogram,'.') <> 0 then
     return substr(vsSubprogram, 0, instr(vsSubprogram,'.')-1);
   end if;
   return vsSubprogram;
 end thisPackage;
 
-function thisFunction(pnDepth in integer default cnProgramDepth) return varchar2
+function thisFunction(pnDepth in integer default null) return varchar2
 is
   vsSubprogram varchar2(100);
 begin
-  vsSubprogram := thisProgram(pnDepth=>pnDepth+1);
+  vsSubprogram := thisProgram(pnDepth=>nvl(pnDepth, cnProgramDepth)+1);
   if instr(vsSubprogram,'.') <> 0 then
     return substr(vsSubprogram, instr(vsSubprogram,'.')+1);
   end if;
   return vsSubprogram;
 end thisFunction;
 
-function thisLine(pnDepth in integer default cnProgramDepth) return integer
+function thisLine(pnDepth in integer default null) return integer
 is
 begin
-  return utl_call_stack.unit_line(pnDepth+1);
+  return utl_call_stack.unit_line(nvl(pnDepth, cnProgramDepth)+1);
 exception
   when others then
     return null;
