@@ -28,7 +28,7 @@ start "TestDevLog.pks"
 start "TestDevLog.pkb"
 
 -- execute tests
-start "TestDevLog_pl.sql"
+--start "TestDevLog_pl.sql"
 
 /*
 How to log messages:
