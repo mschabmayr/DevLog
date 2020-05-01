@@ -4,6 +4,67 @@ create or replace package body DevLog is
 -- author: Martin Schabmayr
 -- last change: 2020-04-01 09:00
 
+procedure recompileDbObjects is
+
+  cursor curStatement is
+    select decode(object_type,
+      'PACKAGE', 'ALTER PACKAGE '||object_name||' COMPILE PACKAGE', 
+      'PACKAGE BODY', 'ALTER PACKAGE '||object_name||' COMPILE BODY', 
+      'TYPE', 'ALTER TYPE '||object_name||' COMPILE SPECIFICATION',
+      'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
+      'Unexpected object_type of: '||object_name) "oida package"
+    from user_objects
+    where
+    --owner in 'BUILD' and
+    --object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY') and
+    status != 'VALID'
+    order by object_name, object_type;
+
+  -- table definitions
+  type TTabStatement is table of varchar2(500);
+  vTabStatements TTabStatement;
+  vnInvalidCount number;
+  vnTryCount number := 3;
+
+  procedure fetchStatements(rTabStatements out TTabStatement)
+  is
+  begin
+    open curStatement;
+    fetch curStatement bulk collect into rTabStatements;
+    close curStatement;
+  end fetchStatements;
+
+begin
+  pl('start of recompileDbObjects');
+  fetchStatements(vTabStatements);
+  vnInvalidCount := vTabStatements.count;
+  pl('invalid count: '||vnInvalidCount);
+  while vnInvalidCount > 0 and vnTryCount > 0 loop
+    for i in 1..vTabStatements.count loop
+      pl('recompiling '||i||'/'||vTabStatements.count||' '||vTabStatements(i));
+      begin
+        execute immediate vTabStatements(i);
+      exception
+        when others then
+          -- catch ORA-24344: success with compilation error
+          pl('exception caught: '||sqlerrm);
+      end;
+    end loop;
+    fetchStatements(vTabStatements);
+    if vTabStatements.count = vnInvalidCount then
+      vnTryCount := vnTryCount - 1;
+      pl('remaining invalid: '||vnInvalidCount||', remaining tries: '||vnTryCount);
+    end if;
+    vnInvalidCount := vTabStatements.count;
+  end loop;
+  pl('end of compilation');
+  pl(vTabStatements.count||' remaining invalid');
+  for i in 1..vTabStatements.count loop
+    pl(vTabStatements(i));
+  end loop;
+  pl('end of recompileDbObjects');
+end;
+
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
 begin
