@@ -12,7 +12,7 @@ procedure recompileDbObjects is
       'PACKAGE BODY', 'ALTER PACKAGE '||object_name||' COMPILE BODY', 
       'TYPE', 'ALTER TYPE '||object_name||' COMPILE SPECIFICATION',
       'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
-      'Unexpected object_type of: '||object_name) "oida package"
+      'Unexpected object_type of: '||object_name||' - type: '||object_type) "alter package"
     from user_objects
     where
     --owner in 'BUILD' and
