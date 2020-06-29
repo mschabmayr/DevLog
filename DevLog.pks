@@ -57,6 +57,8 @@ type TRecDevLogMeta is record (
   dlmcredate     dev_log_meta.dlmcredate%type
 );
 
+function countInvalidDbObjects return integer;
+
 procedure recompileDbObjects;
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2);
