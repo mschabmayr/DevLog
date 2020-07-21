@@ -438,11 +438,13 @@ begin
 end log;
 
 procedure bye        is begin log(psText1=>'bye',        pnDepth=>cnCallerDepth); end;
+procedure ending     is begin log(psText1=>'ending',     pnDepth=>cnCallerDepth); end;
 procedure ex         is begin log(psText1=>'ex',         pnDepth=>cnCallerDepth); end;
 procedure help       is begin log(psText1=>'help',       pnDepth=>cnCallerDepth); end;
 procedure hi         is begin log(psText1=>'hi',         pnDepth=>cnCallerDepth); end;
 procedure impossible is begin log(psText1=>'impossible', pnDepth=>cnCallerDepth); end;
 procedure mark       is begin log(psText1=>'mark',       pnDepth=>cnCallerDepth); end;
+procedure starting   is begin log(psText1=>'starting',   pnDepth=>cnCallerDepth); end;
 
 procedure log(
   psText1  in varchar2 default null,

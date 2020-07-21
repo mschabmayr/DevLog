@@ -170,11 +170,13 @@ procedure log(
 );
 
 procedure bye;
+procedure ending;
 procedure ex;
 procedure help;
 procedure hi;
 procedure impossible;
 procedure mark;
+procedure starting;
 
 procedure log(
   psText1  in varchar2 default null,
