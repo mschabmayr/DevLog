@@ -66,10 +66,10 @@ begin
     vnInvalidCount := vTabStatements.count;
   end loop;
   pl('end of compilation');
-  pl(vTabStatements.count||' remaining invalid');
   for i in 1..vTabStatements.count loop
     pl(vTabStatements(i));
   end loop;
+  pl(vTabStatements.count||' remaining invalid');
   pl('end of recompileDbObjects');
 end;
 
