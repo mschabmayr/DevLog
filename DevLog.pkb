@@ -6,9 +6,17 @@ create or replace package body DevLog is
 
 function countInvalidDbObjects return integer
 is
+  cursor curInvalidObjects is
+    select count(*)
+      from user_objects
+     where status != 'VALID';
+  vnCount number;
 begin
-  return -1; -- TODO
-end;
+  open curInvalidObjects;
+  fetch curInvalidObjects into vnCount;
+  close curInvalidObjects;
+  return vnCount;
+end countInvalidDbObjects;
 
 procedure recompileDbObjects is
 
