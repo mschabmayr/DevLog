@@ -8,16 +8,21 @@ NOTE: Pull this file into sqldeveloper and execute all (hit F5).
 Don't copy the statements to some other file, because the paths are relative in: start "<path>"
 */
 
-
 drop package TestDevLog;
 drop package DevLog;
 drop view DevLogView;
 drop view DevLogValView;
-drop table dev_log_meta;
+drop index    i0_dev_log_dyn_query;
+drop table    dev_log_dyn_query;
+drop sequence dev_log_dyn_query_seq;
+drop index    i0_dev_log_dyn_var;
+drop table    dev_log_dyn_var;
+drop sequence dev_log_dyn_var_seq;
+drop table    dev_log_meta;
 drop sequence dev_log_meta_seq;
-drop table dev_log_val;
+drop table    dev_log_val;
 drop sequence dev_log_val_seq;
-drop table dev_log;
+drop table    dev_log;
 drop sequence dev_log_seq;
 
 start "create_table_dev_log.sql"

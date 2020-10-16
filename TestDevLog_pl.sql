@@ -11,7 +11,7 @@ vbNull boolean;
 procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
 begin
 pl('start of DevLog tests');
-DevLog.clear;
+DevLog.clearLog;
 MicAll.initGlobals('C4', 'SW', 'DEU', 'MIC-CUST', 'TECHNICUS');
 DevLog.log('testing', 'for', 'first', 'user', DevLog.toChar(true));
 TestDevLog.assertLogExists(psText1 => 'testing',

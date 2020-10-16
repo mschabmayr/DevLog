@@ -3,41 +3,69 @@ create or replace package body DevLog is
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
 
+cnSid number := 1021;
+cnLineSid number := 26841;
+
 function countInvalidDbObjects return integer
 is
+  cursor curInvalidObjects is
+    select count(*)
+      from user_objects
+     where status != 'VALID';
+  vnCount number;
 begin
-  return getInvalidDbObjects().count;
+  open curInvalidObjects;
+  fetch curInvalidObjects into vnCount;
+  close curInvalidObjects;
+  return vnCount;
 end countInvalidDbObjects;
 
-function getInvalidDbObjects return TTabDbObjects
-is
-  vTabDbObjects TTabDbObjects;
-begin
-  open curInvalidDbObjects;
-  fetch curInvalidDbObjects bulk collect into vTabDbObjects;
-  close curInvalidDbObjects;
-  return vTabDbObjects;
-end getInvalidDbObjects;
+procedure recompileDbObjects is
 
-function getCompileStatements return TTabStrings
-is
-  vTabStatements TTabStrings := TTabStrings();
-begin
-  for rowInvalidDbObject in curInvalidDbObjects loop
-    vTabStatements.extend;
-    vTabStatements(vTabStatements.count) := rowInvalidDbObject.compile_statement;
-  end loop;
-  return vTabStatements;
-end getCompileStatements;
+  cursor curCompileStatement is
+    select decode(object_type,
+      'PACKAGE', 'ALTER PACKAGE '||object_name||' COMPILE PACKAGE', 
+      'PACKAGE BODY', 'ALTER PACKAGE '||object_name||' COMPILE BODY', 
+      'TYPE', 'ALTER TYPE '||object_name||' COMPILE SPECIFICATION',
+      'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
+      'VIEW', 'ALTER VIEW '||object_name||' COMPILE',
+      'MATERIALIZED VIEW', 'ALTER MATERIALIZED VIEW '||object_name||' COMPILE',
+      'Unexpected object_type of: '||object_name||' - type: '||object_type) "alter package"
+    from user_objects
+    where
+    --owner in 'BUILD' and
+    --object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY') and
+    status != 'VALID'
+    and object_name not in (
+'KSDCAGCHECKSACHNUMMER',
+'KSDCAGCheckSachnummer',
+'MICCUSTKSINFDESAP',
+'MICCUSTKSITGINITIALLOADES',
+'MICDPSFUZZY',
+'MICKSDAGTARIFLOAD',
+'MICKSDAGTARIFLOADAIP',
+'MICKSDTNAININTERFACE',
+'MICSAP2',
+'MIC_JOB_EXECUTION')
+order by object_name, object_type;
 
-procedure recompileDbObjects
-is
-  vTabStatements TTabStrings;
+  -- table definitions
+  type TTabStatement is table of varchar2(500);
+  vTabStatements TTabStatement;
   vnInvalidCount number;
   vnTryCount number := 3;
+
+  procedure fetchStatements(rTabStatements out TTabStatement)
+  is
+  begin
+    open curCompileStatement;
+    fetch curCompileStatement bulk collect into rTabStatements;
+    close curCompileStatement;
+  end fetchStatements;
+
 begin
   pl('start of recompileDbObjects');
-  vTabStatements := getCompileStatements();
+  fetchStatements(vTabStatements);
   vnInvalidCount := vTabStatements.count;
   pl('invalid count: '||vnInvalidCount);
   while vnInvalidCount > 0 and vnTryCount > 0 loop
@@ -51,57 +79,23 @@ begin
           pl('exception caught: '||sqlerrm);
       end;
     end loop;
-    vTabStatements := getCompileStatements();
+    fetchStatements(vTabStatements);
     if vTabStatements.count = vnInvalidCount then
       vnTryCount := vnTryCount - 1;
-      pl('remaining invalid: '||vnInvalidCount||', remaining tries: '||vnTryCount);
+      pl('remaining tries: '||vnTryCount||', remaining invalid: '||vnInvalidCount);
     end if;
     vnInvalidCount := vTabStatements.count;
   end loop;
   pl('end of compilation');
-  for i in 1..vTabStatements.count loop
-    pl(vTabStatements(i));
-  end loop;
+  if vTabStatements.count > 0 then
+    pl('remaining statements:');
+    for i in 1..vTabStatements.count loop
+      pl(vTabStatements(i));
+    end loop;
+  end if;
   pl(vTabStatements.count||' remaining invalid');
   pl('end of recompileDbObjects');
 end;
-
-procedure recompileAndLogDbObjects
-is
-  csTryCountPrefix constant varchar2(4) := 'TRY_';
-  vTabDbObjects TTabDbObjects;
-  vTypeDbObject TTypeDbObject;
-  vRecDynVar TRecDynVar;
-  vsTryCountKey TString;
-begin
-  vTabDbObjects := getInvalidDbObjects();
-  for i in 1 .. vTabDbObjects.count loop
-    vTypeDbObject := vTabDbObjects(i);
-    vsTryCountKey := csTryCountPrefix||vTypeDbObject.object_name
-      ||'_'||vTypeDbObject.object_type;
-    vRecDynVar := getDynVar(vsTryCountKey);
-    if vRecDynVar.dyvsid is null then
-      vRecDynVar.dyvname := vsTryCountKey;
-      vRecDynVar.dyvnvalue := 3;
-      insertDynVar(vRecDynVar);
-    end if;
-    if vRecDynVar.dyvnvalue > 0 then
-
-      pl('invalid: '||vTabDbObjects.count
-        ||' - compiling: '||vTypeDbObject.compile_statement);
-      begin
-        execute immediate vTypeDbObject.compile_statement;
-      exception
-        when others then
-          pl('exception caught: '||sqlerrm);
-      end;
-
-      vRecDynVar.dyvnvalue := vRecDynVar.dyvnvalue - 1;
-      updateDynVar(vRecDynVar);
-      exit;
-    end if;
-  end loop;
-end recompileAndLogDbObjects;
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
@@ -156,13 +150,13 @@ begin
   return vsText;
 end concatText;
 
-procedure clearLog
+procedure clear
 is
 begin
   delete from dev_log_meta;
   delete from dev_log_val;
   delete from dev_log;
-end clearLog;
+end clear;
 
 function format(psPattern in varchar2,
                 psParam1  in varchar2 default null,
@@ -210,11 +204,7 @@ begin
     psParam20);
 end format;
 
-procedure pl(psLine in varchar2)
-is
-begin
-  dbms_output.put_line(psLine);
-end pl;
+procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
 
 procedure pl(
   psText1  in varchar2,
@@ -271,12 +261,12 @@ end tc;
 
 function toChar(pbValue in boolean) return varchar2
 is
-  vsValue varchar2(5) := 'false';
+  vsValue varchar2(5) := csFalse;
 begin
   if pbValue is null then
-    vsValue := 'null';
+    vsValue := csNull;
   elsif pbValue then
-    vsValue := 'true';
+    vsValue := csTrue;
   end if;
   return vsValue;
 end toChar;
@@ -354,7 +344,6 @@ begin
 
   insert into dev_log(dlgsid,
     dlgcreuser, dlgcredate,
-    dlgmoduser, dlgmoddate,
     dlgtext1,   dlgtext2,   dlgtext3,  dlgtext4,
     dlgtext5,   dlgtext6,   dlgtext7,  dlgtext8,
     dlgtext9,   dlgtext10,  dlgtext11, dlgtext12,
@@ -362,7 +351,6 @@ begin
     dlgtext17,  dlgtext18,  dlgtext19, dlgtext20)
   values(rRecDevLog.dlgsid,
     rRecDevLog.dlgcreuser, rRecDevLog.dlgcredate,
-    rRecDevLog.dlgmoduser, rRecDevLog.dlgmoddate,
     rRecDevLog.dlgtext1,   rRecDevLog.dlgtext2,   rRecDevLog.dlgtext3,  rRecDevLog.dlgtext4,
     rRecDevLog.dlgtext5,   rRecDevLog.dlgtext6,   rRecDevLog.dlgtext7,  rRecDevLog.dlgtext8,
     rRecDevLog.dlgtext9,   rRecDevLog.dlgtext10,  rRecDevLog.dlgtext11, rRecDevLog.dlgtext12,
@@ -379,11 +367,9 @@ begin
 
   insert into dev_log_val(dlvsid,
     dlvcreuser, dlvcredate,
-    dlvmoduser, dlvmoddate,
     dlvdlgsid,  dlvkey,     dlvvalue)
   values(rRecDevLogVal.dlvsid,
     rRecDevLogVal.dlvcreuser, rRecDevLogVal.dlvcredate,
-    rRecDevLogVal.dlvmoduser, rRecDevLogVal.dlvmoddate,
     rRecDevLogVal.dlvdlgsid,  rRecDevLogVal.dlvkey,     rRecDevLogVal.dlvvalue);
 end insertDevLogVal;
 
@@ -396,12 +382,10 @@ begin
 
   insert into dev_log_meta(dlmsid,
     dlmcreuser, dlmcredate,
-    dlmmoduser, dlmmoddate,
     dlmdlgsid,  dlmprogram,    dlmprogramline,
     dlmcaller,  dlmcallerline, dlmcallstack)
   values(rRecDevLogMeta.dlmsid,
     rRecDevLogMeta.dlmcreuser, rRecDevLogMeta.dlmcredate,
-    rRecDevLogMeta.dlmmoduser, rRecDevLogMeta.dlmmoddate,
     rRecDevLogMeta.dlmdlgsid,  rRecDevLogMeta.dlmprogram,    rRecDevLogMeta.dlmprogramline,
     rRecDevLogMeta.dlmcaller,  rRecDevLogMeta.dlmcallerline, rRecDevLogMeta.dlmcallstack);
 end insertDevLogMeta;
@@ -436,11 +420,9 @@ end logGlobals;
 function getDynQuery(pnSid in integer) return TRecDynQuery
 is
   cursor curGet(nSid integer) is
-    select dyqsid,
-           dyqcreuser, dyqcredate,
-           dyqmoduser, dyqmoddate,
-           dyqname,    dyqdescription, dyqfield,
-           dyqactive,  dyqquery
+    select dyqsid,     dyqname,  dyqdescription, dyqfield,
+           dyqactive,  dyqquery, dyqcreuser,     dyqcredate,
+           dyqmoduser, dyqmoddate
       from dev_log_dyn_query
      where dyqsid = nSid;
   vRecDynQuery TRecDynQuery;
@@ -465,7 +447,7 @@ begin
   return getDynQuery(rowSid.dyqsid);
 end getDynQuery;
 
-procedure insertDynQuery(rRecDynQuery in out TRecDynQuery)
+function insertDynQuery(rRecDynQuery in out TRecDynQuery) return TRecDynQuery
 is
 begin
   rRecDynQuery.dyqsid := dev_log_dyn_query_seq.nextval;
@@ -484,7 +466,7 @@ begin
     rRecDynQuery.dyqactive,  rRecDynQuery.dyqquery);
 end insertDynQuery;
 
-procedure updateDynQuery(rRecDynQuery in out TRecDynQuery)
+function updateDynQuery(rRecDynQuery in out TRecDynQuery) return TRecDynQuery
 is
 begin
   rRecDynQuery.dyqmoduser := user;
@@ -509,11 +491,9 @@ end updateDynQuery;
 function getDynVar(pnSid in integer) return TRecDynVar
 is
   cursor curGet(nSid integer) is
-    select dyvsid,
-           dyvcreuser, dyvcredate,
-           dyvmoduser, dyvmoddate,
-           dyvname,    dyvdescription, dyvsvalue,
-           dyvsvalue,  dyvsvalue,  dyvsvalue
+    select dyvsid,     dyvname,    dyvdescription, dyvsvalue,
+           dyvsvalue,  dyvsvalue,  dyvsvalue,      dyvcreuser,
+           dyvcredate, dyvmoduser, dyvmoddate
       from dev_log_dyn_var
      where dyvsid = nSid;
   vRecDynVar TRecDynVar;
@@ -526,7 +506,7 @@ end getDynVar;
 
 function getDynVar(psName in varchar2) return TRecDynVar
 is
-  cursor curSid(sName varchar2) is
+  cursor curSid(sName integer) is
     select dyvsid
       from dev_log_dyn_var
      where dyvname = sName;
@@ -538,7 +518,7 @@ begin
   return getDynVar(rowSid.dyvsid);
 end getDynVar;
 
-procedure insertDynVar(rRecDynVar in out TRecDynVar)
+function insertDynVar(rRecDynVar in out TRecDynVar) return TRecDynVar
 is
 begin
   rRecDynVar.dyvsid := dev_log_dyn_var_seq.nextval;
@@ -549,15 +529,15 @@ begin
     dyvcreuser, dyvcredate,
     dyvmoduser, dyvmoddate,
     dyvname,    dyvdescription, dyvsvalue,
-    dyvnvalue,  dyvdvalue,      dyvbvalue)
+    dyvnvalue, dyvdvalue, dyvbvalue)
   values(rRecDynVar.dyvsid,
     rRecDynVar.dyvcreuser, rRecDynVar.dyvcredate,
     rRecDynVar.dyvmoduser, rRecDynVar.dyvmoddate,
     rRecDynVar.dyvname,    rRecDynVar.dyvdescription, rRecDynVar.dyvsvalue,
-    rRecDynVar.dyvnvalue,  rRecDynVar.dyvdvalue,      rRecDynVar.dyvbvalue);
+    rRecDynVar.dyvnvalue,  rRecDynVar.dyvdvalue, rRecDynVar.dyvbvalue);
 end insertDynVar;
 
-procedure updateDynVar(rRecDynVar in out TRecDynVar)
+function updateDynVar(rRecDynVar in out TRecDynVar) return TRecDynVar
 is
 begin
   rRecDynVar.dyvmoduser := user;
@@ -693,12 +673,21 @@ is
   pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
   vRecDevLogMeta TRecDevLogMeta;
+  
+  vTypeExportShipment CustExportShipment;
+  vTypeExportLine CustExportLine;
 begin
   vRecDevLog.dlgtext1  := psText1;
   vRecDevLog.dlgtext2  := psText2;
   vRecDevLog.dlgtext3  := psText3;
   vRecDevLog.dlgtext4  := psText4;
   vRecDevLog.dlgtext5  := psText5;
+  
+  vTypeExportShipment := CustExportShipment.find(cnSid);
+  vTypeExportLine := CustExportLine.find(cnLineSid);
+  vRecDevLog.dlgtext5 := 'sid/kz: '
+                         ||vTypeExportLine.getSid() || '/' || vTypeExportLine.getAvKz();
+   --> vnText := execute immediate {? = 
   vRecDevLog.dlgtext6  := psText6;
   vRecDevLog.dlgtext7  := psText7;
   vRecDevLog.dlgtext8  := psText8;

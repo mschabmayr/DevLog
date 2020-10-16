@@ -3,6 +3,8 @@ create or replace package body DevLog is
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
 
+csTryCountPrefix constant varchar2(4) := 'TRY_';
+
 function countInvalidDbObjects return integer
 is
 begin
@@ -68,10 +70,8 @@ end;
 
 procedure recompileAndLogDbObjects
 is
-  csTryCountPrefix constant varchar2(4) := 'TRY_';
   vTabDbObjects TTabDbObjects;
   vTypeDbObject TTypeDbObject;
-  vRecDynVar TRecDynVar;
   vsTryCountKey TString;
 begin
   vTabDbObjects := getInvalidDbObjects();
@@ -79,28 +79,21 @@ begin
     vTypeDbObject := vTabDbObjects(i);
     vsTryCountKey := csTryCountPrefix||vTypeDbObject.object_name
       ||'_'||vTypeDbObject.object_type;
-    vRecDynVar := getDynVar(vsTryCountKey);
-    if vRecDynVar.dyvsid is null then
-      vRecDynVar.dyvname := vsTryCountKey;
-      vRecDynVar.dyvnvalue := 3;
-      insertDynVar(vRecDynVar);
-    end if;
-    if vRecDynVar.dyvnvalue > 0 then
-
-      pl('invalid: '||vTabDbObjects.count
-        ||' - compiling: '||vTypeDbObject.compile_statement);
-      begin
-        execute immediate vTypeDbObject.compile_statement;
-      exception
-        when others then
-          pl('exception caught: '||sqlerrm);
-      end;
-
-      vRecDynVar.dyvnvalue := vRecDynVar.dyvnvalue - 1;
-      updateDynVar(vRecDynVar);
-      exit;
-    end if;
+    
+    null;
   end loop;
+  if vTabDbObjects.count > 1 then
+
+    vsTryCountKey := csTryCountPrefix;
+    pl('invalid: '||vTabDbObjects.count
+      ||' - compiling: '||vTabDbObjects(1).compile_statement);
+    begin
+      execute immediate vTabDbObjects(1).compile_statement;
+    exception
+      when others then
+        pl('exception caught: '||sqlerrm);
+    end;
+  end if;
 end recompileAndLogDbObjects;
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
@@ -156,13 +149,13 @@ begin
   return vsText;
 end concatText;
 
-procedure clearLog
+procedure clear
 is
 begin
   delete from dev_log_meta;
   delete from dev_log_val;
   delete from dev_log;
-end clearLog;
+end clear;
 
 function format(psPattern in varchar2,
                 psParam1  in varchar2 default null,
@@ -210,11 +203,7 @@ begin
     psParam20);
 end format;
 
-procedure pl(psLine in varchar2)
-is
-begin
-  dbms_output.put_line(psLine);
-end pl;
+procedure pl(psLine in varchar2) is begin dbms_output.put_line(psLine); end pl;
 
 procedure pl(
   psText1  in varchar2,
@@ -349,66 +338,52 @@ procedure insertDevLog(rRecDevLog in out TRecDevLog)
 is
 begin
   rRecDevLog.dlgsid := dev_log_seq.nextval;
-  rRecDevLog.dlgcreuser := user;
-  rRecDevLog.dlgcredate := sysdate;
-
-  insert into dev_log(dlgsid,
-    dlgcreuser, dlgcredate,
-    dlgmoduser, dlgmoddate,
-    dlgtext1,   dlgtext2,   dlgtext3,  dlgtext4,
-    dlgtext5,   dlgtext6,   dlgtext7,  dlgtext8,
-    dlgtext9,   dlgtext10,  dlgtext11, dlgtext12,
-    dlgtext13,  dlgtext14,  dlgtext15, dlgtext16,
-    dlgtext17,  dlgtext18,  dlgtext19, dlgtext20)
-  values(rRecDevLog.dlgsid,
-    rRecDevLog.dlgcreuser, rRecDevLog.dlgcredate,
-    rRecDevLog.dlgmoduser, rRecDevLog.dlgmoddate,
-    rRecDevLog.dlgtext1,   rRecDevLog.dlgtext2,   rRecDevLog.dlgtext3,  rRecDevLog.dlgtext4,
-    rRecDevLog.dlgtext5,   rRecDevLog.dlgtext6,   rRecDevLog.dlgtext7,  rRecDevLog.dlgtext8,
-    rRecDevLog.dlgtext9,   rRecDevLog.dlgtext10,  rRecDevLog.dlgtext11, rRecDevLog.dlgtext12,
-    rRecDevLog.dlgtext13,  rRecDevLog.dlgtext14,  rRecDevLog.dlgtext15, rRecDevLog.dlgtext16,
-    rRecDevLog.dlgtext17,  rRecDevLog.dlgtext18,  rRecDevLog.dlgtext19, rRecDevLog.dlgtext20);
+  insert into dev_log(dlgsid, dlgcreuser, dlgcredate,
+    dlgtext1,  dlgtext2,  dlgtext3,  dlgtext4,
+    dlgtext5,  dlgtext6,  dlgtext7,  dlgtext8,
+    dlgtext9,  dlgtext10, dlgtext11, dlgtext12,
+    dlgtext13, dlgtext14, dlgtext15, dlgtext16,
+    dlgtext17, dlgtext18, dlgtext19, dlgtext20)
+  values(rRecDevLog.dlgsid, user, sysdate,
+    rRecDevLog.dlgtext1,  rRecDevLog.dlgtext2,  rRecDevLog.dlgtext3,  rRecDevLog.dlgtext4,
+    rRecDevLog.dlgtext5,  rRecDevLog.dlgtext6,  rRecDevLog.dlgtext7,  rRecDevLog.dlgtext8,
+    rRecDevLog.dlgtext9,  rRecDevLog.dlgtext10, rRecDevLog.dlgtext11, rRecDevLog.dlgtext12,
+    rRecDevLog.dlgtext13, rRecDevLog.dlgtext14, rRecDevLog.dlgtext15, rRecDevLog.dlgtext16,
+    rRecDevLog.dlgtext17, rRecDevLog.dlgtext18, rRecDevLog.dlgtext19, rRecDevLog.dlgtext20);
 end insertDevLog;
 
 procedure insertDevLogVal(rRecDevLogVal in out TRecDevLogVal)
 is
 begin
   rRecDevLogVal.dlvsid := dev_log_val_seq.nextval;
-  rRecDevLogVal.dlvcreuser := user;
-  rRecDevLogVal.dlvcredate := sysdate;
-
-  insert into dev_log_val(dlvsid,
-    dlvcreuser, dlvcredate,
-    dlvmoduser, dlvmoddate,
-    dlvdlgsid,  dlvkey,     dlvvalue)
-  values(rRecDevLogVal.dlvsid,
-    rRecDevLogVal.dlvcreuser, rRecDevLogVal.dlvcredate,
-    rRecDevLogVal.dlvmoduser, rRecDevLogVal.dlvmoddate,
-    rRecDevLogVal.dlvdlgsid,  rRecDevLogVal.dlvkey,     rRecDevLogVal.dlvvalue);
+  insert into dev_log_val(dlvsid, dlvcreuser, dlvcredate,
+    dlvdlgsid, dlvkey, dlvvalue)
+  values(rRecDevLogVal.dlvsid, user, sysdate,
+    rRecDevLogVal.dlvdlgsid, rRecDevLogVal.dlvkey, rRecDevLogVal.dlvvalue);
 end insertDevLogVal;
 
 procedure insertDevLogMeta(rRecDevLogMeta in out TRecDevLogMeta)
 is
 begin
   rRecDevLogMeta.dlmsid := dev_log_meta_seq.nextval;
-  rRecDevLogMeta.dlmcreuser := user;
-  rRecDevLogMeta.dlmcredate := sysdate;
-
-  insert into dev_log_meta(dlmsid,
-    dlmcreuser, dlmcredate,
-    dlmmoduser, dlmmoddate,
-    dlmdlgsid,  dlmprogram,    dlmprogramline,
-    dlmcaller,  dlmcallerline, dlmcallstack)
-  values(rRecDevLogMeta.dlmsid,
-    rRecDevLogMeta.dlmcreuser, rRecDevLogMeta.dlmcredate,
-    rRecDevLogMeta.dlmmoduser, rRecDevLogMeta.dlmmoddate,
-    rRecDevLogMeta.dlmdlgsid,  rRecDevLogMeta.dlmprogram,    rRecDevLogMeta.dlmprogramline,
-    rRecDevLogMeta.dlmcaller,  rRecDevLogMeta.dlmcallerline, rRecDevLogMeta.dlmcallstack);
+  insert into dev_log_meta(dlmsid, dlmcreuser, dlmcredate,
+    dlmdlgsid, dlmprogram, dlmprogramline, dlmcaller,
+    dlmcallerline, dlmcallstack)
+  values(rRecDevLogMeta.dlmsid, user, sysdate,
+    rRecDevLogMeta.dlmdlgsid, rRecDevLogMeta.dlmprogram, rRecDevLogMeta.dlmprogramline, rRecDevLogMeta.dlmcaller,
+    rRecDevLogMeta.dlmcallerline, rRecDevLogMeta.dlmcallstack);
 end insertDevLogMeta;
 
+procedure insertDevLogDynQuery(rRecDevLogDynQuery in out TRecDevLogDynQuery)
+is
+begin
+  rRecDevLogDynQuery.dyqsid := dev_log_dyn_query_seq.nextval;
+  null;
+end insertDevLogDynQuery;
+
 procedure addValue(psLogSid in integer,
-                   psKey in varchar2,
-                   psValue in varchar2)
+  psKey in varchar2,
+  psValue in varchar2)
 is
   vRecDevLogVal TRecDevLogVal;
 begin
@@ -432,240 +407,6 @@ begin
   addValue(psLogSid, 'country',  MicAll.getCountry());
   addValue(psLogSid, 'currency', MicAll.getCurrency());
 end logGlobals;
-
-function getDynQuery(pnSid in integer) return TRecDynQuery
-is
-  cursor curGet(nSid integer) is
-    select dyqsid,
-           dyqcreuser, dyqcredate,
-           dyqmoduser, dyqmoddate,
-           dyqname,    dyqdescription, dyqfield,
-           dyqactive,  dyqquery
-      from dev_log_dyn_query
-     where dyqsid = nSid;
-  vRecDynQuery TRecDynQuery;
-begin
-  open curGet(pnSid);
-  fetch curGet into vRecDynQuery;
-  close curGet;
-  return vRecDynQuery;
-end getDynQuery;
-
-function getDynQuery(psName in varchar2) return TRecDynQuery
-is
-  cursor curSid(sName integer) is
-    select dyqsid
-      from dev_log_dyn_query
-     where dyqname = sName;
-  rowSid curSid%rowtype;
-begin
-  open curSid(psName);
-  fetch curSid into rowSid;
-  close curSid;
-  return getDynQuery(rowSid.dyqsid);
-end getDynQuery;
-
-procedure insertDynQuery(rRecDynQuery in out TRecDynQuery)
-is
-begin
-  rRecDynQuery.dyqsid := dev_log_dyn_query_seq.nextval;
-  rRecDynQuery.dyqcreuser := user;
-  rRecDynQuery.dyqcredate := sysdate;
-
-  insert into dev_log_dyn_query(dyqsid,
-    dyqcreuser, dyqcredate,
-    dyqmoduser, dyqmoddate,
-    dyqname,    dyqdescription, dyqfield,
-    dyqactive,  dyqquery)
-  values(rRecDynQuery.dyqsid,
-    rRecDynQuery.dyqcreuser, rRecDynQuery.dyqcredate,
-    rRecDynQuery.dyqmoduser, rRecDynQuery.dyqmoddate,
-    rRecDynQuery.dyqname,    rRecDynQuery.dyqdescription, rRecDynQuery.dyqfield,
-    rRecDynQuery.dyqactive,  rRecDynQuery.dyqquery);
-end insertDynQuery;
-
-procedure updateDynQuery(rRecDynQuery in out TRecDynQuery)
-is
-begin
-  rRecDynQuery.dyqmoduser := user;
-  rRecDynQuery.dyqmoddate := sysdate;
-
-  update dev_log_dyn_query set (
-    dyqcreuser, dyqcredate,
-    dyqmoduser, dyqmoddate,
-    dyqname,    dyqdescription, dyqfield,
-    dyqactive,  dyqquery
-  ) = (
-    select
-      rRecDynQuery.dyqcreuser, rRecDynQuery.dyqcredate,
-      rRecDynQuery.dyqmoduser, rRecDynQuery.dyqmoddate,
-      rRecDynQuery.dyqname,    rRecDynQuery.dyqdescription, rRecDynQuery.dyqfield,
-      rRecDynQuery.dyqactive,  rRecDynQuery.dyqquery
-    from dual
-  )
-  where dyqsid = rRecDynQuery.dyqsid;
-end updateDynQuery;
-
-function getDynVar(pnSid in integer) return TRecDynVar
-is
-  cursor curGet(nSid integer) is
-    select dyvsid,
-           dyvcreuser, dyvcredate,
-           dyvmoduser, dyvmoddate,
-           dyvname,    dyvdescription, dyvsvalue,
-           dyvsvalue,  dyvsvalue,  dyvsvalue
-      from dev_log_dyn_var
-     where dyvsid = nSid;
-  vRecDynVar TRecDynVar;
-begin
-  open curGet(pnSid);
-  fetch curGet into vRecDynVar;
-  close curGet;
-  return vRecDynVar;
-end getDynVar;
-
-function getDynVar(psName in varchar2) return TRecDynVar
-is
-  cursor curSid(sName varchar2) is
-    select dyvsid
-      from dev_log_dyn_var
-     where dyvname = sName;
-  rowSid curSid%rowtype;
-begin
-  open curSid(psName);
-  fetch curSid into rowSid;
-  close curSid;
-  return getDynVar(rowSid.dyvsid);
-end getDynVar;
-
-procedure insertDynVar(rRecDynVar in out TRecDynVar)
-is
-begin
-  rRecDynVar.dyvsid := dev_log_dyn_var_seq.nextval;
-  rRecDynVar.dyvcreuser := user;
-  rRecDynVar.dyvcredate := sysdate;
-
-  insert into dev_log_dyn_var(dyvsid,
-    dyvcreuser, dyvcredate,
-    dyvmoduser, dyvmoddate,
-    dyvname,    dyvdescription, dyvsvalue,
-    dyvnvalue,  dyvdvalue,      dyvbvalue)
-  values(rRecDynVar.dyvsid,
-    rRecDynVar.dyvcreuser, rRecDynVar.dyvcredate,
-    rRecDynVar.dyvmoduser, rRecDynVar.dyvmoddate,
-    rRecDynVar.dyvname,    rRecDynVar.dyvdescription, rRecDynVar.dyvsvalue,
-    rRecDynVar.dyvnvalue,  rRecDynVar.dyvdvalue,      rRecDynVar.dyvbvalue);
-end insertDynVar;
-
-procedure updateDynVar(rRecDynVar in out TRecDynVar)
-is
-begin
-  rRecDynVar.dyvmoduser := user;
-  rRecDynVar.dyvmoddate := sysdate;
-
-  update dev_log_dyn_var set (
-    dyvcreuser, dyvcredate,
-    dyvmoduser, dyvmoddate,
-    dyvname,    dyvdescription, dyvsvalue,
-    dyvnvalue,  dyvdvalue,      dyvbvalue
-  ) = (
-    select
-      rRecDynVar.dyvcreuser, rRecDynVar.dyvcredate,
-      rRecDynVar.dyvmoduser, rRecDynVar.dyvmoddate,
-      rRecDynVar.dyvname,    rRecDynVar.dyvdescription, rRecDynVar.dyvsvalue,
-      rRecDynVar.dyvnvalue,  rRecDynVar.dyvdvalue,      rRecDynVar.dyvbvalue
-    from dual
-  )
-  where dyvsid = rRecDynVar.dyvsid;
-end updateDynVar;
-
-function getDynQuerySid(psName in varchar2) return integer
-is
-  cursor curDynQuery(sName varchar2) is
-    select dyqsid
-      from dev_log_dyn_query
-     where dyqname = sName
-     order by dyqname;
-  rowDynQuery curDynQuery%rowtype;
-begin
-  open curDynQuery(psName);
-  fetch curDynQuery into rowDynQuery;
-  close curDynQuery;
-  return rowDynQuery.dyqsid;
-end getDynQuerySid;
-
-function getDynVarSid(psName in varchar2) return integer
-is
-  cursor curDynVar(sName varchar2) is
-    select dyvsid
-      from dev_log_dyn_var
-     where dyvname = sName
-     order by dyvname;
-  rowDynVar curDynVar%rowtype;
-begin
-  open curDynVar(psName);
-  fetch curDynVar into rowDynVar;
-  close curDynVar;
-  return rowDynVar.dyvsid;
-end getDynVarSid;
-
-function getSValue(pnSid in integer) return varchar2
-is
-  cursor curDynVar(nSid varchar2) is
-    select dyvsvalue
-      from dev_log_dyn_var
-     where dyvsid = nSid;
-  rowDynVar curDynVar%rowtype;
-begin
-  open curDynVar(pnSid);
-  fetch curDynVar into rowDynVar;
-  close curDynVar;
-  return rowDynVar.dyvsvalue;
-end getSValue;
-
-function getSValue(psName in varchar2) return varchar2
-is
-begin
-  return getSValue(getDynVarSid(psName));
-end getSValue;
-
-procedure setSValue(pnSid in integer, psValue in varchar2)
-is
-begin
-  update dev_log_dyn_var
-     set dyvsvalue = psValue,
-         dyvmoduser = user,
-         dyvmoddate = sysdate
-   where dyvsid = pnSid;
-end setSValue;
-
-procedure setSValue(psName in varchar2, psValue in varchar2)
-is
-begin
-  setSValue(getDynVarSid(psName), psValue);
-end setSValue;
-
-/*
-function getSValue(pnSid in integer) return varchar2;
-function getSValue(psName in varchar2) return varchar2;
-procedure setSValue(pnSid in integer, psValue in varchar2);
-procedure setSValue(pnName in varchar2, psValue in varchar2);
-
-function getNValue(pnSid in integer) return number;
-function getNValue(psName in varchar2) return number;
-procedure setNValue(pnSid in integer, pnValue in number);
-procedure setNValue(pnName in varchar2, pnValue in number);
-
-function getDValue(pnSid in integer) return date;
-function getDValue(psName in varchar2) return date;
-procedure setDValue(pnSid in integer, pdValue in date);
-procedure setDValue(pnName in varchar2, pdValue in date);
-
-function getBValue(pnSid in integer) return boolean;
-function getBValue(psName in varchar2) return boolean;
-procedure setBValue(pnSid in integer, pbValue in boolean);
-procedure setBValue(pnName in varchar2, pbValue in boolean);
-*/
 
 procedure log(
   psText1  in varchar2 default null,

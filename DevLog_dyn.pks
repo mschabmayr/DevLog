@@ -15,16 +15,8 @@ csNull constant varchar2(4) := 'null';
 csTrueFlag constant varchar2(1) := '1';
 csFalseFlag constant varchar2(1) := '0';
 
-cnVarcharDbMaxLen constant integer := 4000;
-subtype TString is varchar2(cnVarcharDbMaxLen);
-type TTabStrings is table of TString;
-
 type TRecDevLog is record (
   dlgsid     dev_log.dlgsid%type,
-  dlgcreuser dev_log.dlgcreuser%type,
-  dlgcredate dev_log.dlgcredate%type,
-  dlgmoduser dev_log.dlgmoduser%type,
-  dlgmoddate dev_log.dlgmoddate%type,
   dlgtext1   dev_log.dlgtext1%type,
   dlgtext2   dev_log.dlgtext2%type,
   dlgtext3   dev_log.dlgtext3%type,
@@ -44,84 +36,62 @@ type TRecDevLog is record (
   dlgtext17  dev_log.dlgtext17%type,
   dlgtext18  dev_log.dlgtext18%type,
   dlgtext19  dev_log.dlgtext19%type,
-  dlgtext20  dev_log.dlgtext20%type
+  dlgtext20  dev_log.dlgtext20%type,
+  dlgcreuser dev_log.dlgcreuser%type,
+  dlgcredate dev_log.dlgcredate%type
 );
 
 type TRecDevLogVal is record (
   dlvsid     dev_log_val.dlvsid%type,
   dlvdlgsid  dev_log_val.dlvdlgsid%type,
-  dlvcreuser dev_log_val.dlvcreuser%type,
-  dlvcredate dev_log_val.dlvcredate%type,
-  dlvmoduser dev_log_val.dlvmoduser%type,
-  dlvmoddate dev_log_val.dlvmoddate%type,
   dlvkey     dev_log_val.dlvkey%type,
-  dlvvalue   dev_log_val.dlvvalue%type
+  dlvvalue   dev_log_val.dlvvalue%type,
+  dlvcreuser dev_log_val.dlvcreuser%type,
+  dlvcredate dev_log_val.dlvcredate%type
 );
 
 type TRecDevLogMeta is record (
   dlmsid         dev_log_meta.dlmsid%type,
   dlmdlgsid      dev_log_meta.dlmdlgsid%type,
-  dlmcreuser     dev_log_meta.dlmcreuser%type,
-  dlmcredate     dev_log_meta.dlmcredate%type,
-  dlmmoduser     dev_log_meta.dlmmoduser%type,
-  dlmmoddate     dev_log_meta.dlmmoddate%type,
   dlmprogram     dev_log_meta.dlmprogram%type,
   dlmprogramline dev_log_meta.dlmprogramline%type,
   dlmcaller      dev_log_meta.dlmcaller%type,
   dlmcallerline  dev_log_meta.dlmcallerline%type,
-  dlmcallstack   dev_log_meta.dlmcallstack%type
+  dlmcallstack   dev_log_meta.dlmcallstack%type,
+  dlmcreuser     dev_log_meta.dlmcreuser%type,
+  dlmcredate     dev_log_meta.dlmcredate%type
 );
 
 type TRecDynQuery is record (
   dyqsid         dev_log_dyn_query.dyqsid%type,
-  dyqcreuser     dev_log_dyn_query.dyqcreuser%type,
-  dyqcredate     dev_log_dyn_query.dyqcredate%type,
-  dyqmoduser     dev_log_dyn_query.dyqmoduser%type,
-  dyqmoddate     dev_log_dyn_query.dyqmoddate%type,
   dyqname        dev_log_dyn_query.dyqname%type,
   dyqdescription dev_log_dyn_query.dyqdescription%type,
   dyqfield       dev_log_dyn_query.dyqfield%type,
   dyqactive      dev_log_dyn_query.dyqactive%type,
-  dyqquery       dev_log_dyn_query.dyqquery%type
+  dyqquery       dev_log_dyn_query.dyqquery%type,
+  dyqcreuser     dev_log_dyn_query.dyqcreuser%type,
+  dyqcredate     dev_log_dyn_query.dyqcredate%type,
+  dyqmoduser     dev_log_dyn_query.dyqmoduser%type,
+  dyqmoddate     dev_log_dyn_query.dyqmoddate%type
 );
 
 type TRecDynVar is record (
   dyvsid         dev_log_dyn_var.dyvsid%type,
-  dyvcreuser     dev_log_dyn_var.dyvcreuser%type,
-  dyvcredate     dev_log_dyn_var.dyvcredate%type,
-  dyvmoduser     dev_log_dyn_var.dyvmoduser%type,
-  dyvmoddate     dev_log_dyn_var.dyvmoddate%type,
   dyvname        dev_log_dyn_var.dyvname%type,
   dyvdescription dev_log_dyn_var.dyvdescription%type,
   dyvsvalue      dev_log_dyn_var.dyvsvalue%type,
   dyvnvalue      dev_log_dyn_var.dyvnvalue%type,
   dyvdvalue      dev_log_dyn_var.dyvdvalue%type,
-  dyvbvalue      dev_log_dyn_var.dyvbvalue%type
+  dyvbvalue      dev_log_dyn_var.dyvbvalue%type,
+  dyvcreuser     dev_log_dyn_var.dyvcredate%type,
+  dyvcredate     dev_log_dyn_var.dyvcredate%type,
+  dyvmoduser     dev_log_dyn_var.dyvmoduser%type,
+  dyvmoddate     dev_log_dyn_var.dyvmoddate%type
 );
 
-cursor curInvalidDbObjects is
-  select object_name,
-         object_type,
-         decode(object_type,
-         'PACKAGE', 'ALTER PACKAGE '||object_name||' COMPILE PACKAGE', 
-         'PACKAGE BODY', 'ALTER PACKAGE '||object_name||' COMPILE BODY', 
-         'TYPE', 'ALTER TYPE '||object_name||' COMPILE SPECIFICATION',
-         'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
-         'VIEW', 'ALTER VIEW '||object_name||' COMPILE',
-         'MATERIALIZED VIEW', 'ALTER MATERIALIZED VIEW '||object_name||' COMPILE',
-         'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement
-    from user_objects
-   where status != 'VALID'
-     and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
-   order by object_name, object_type;
-
-subtype TTypeDbObject is curInvalidDbObjects%rowtype;
-type TTabDbObjects is table of TTypeDbObject;
-
 function countInvalidDbObjects return integer;
-function getInvalidDbObjects return TTabDbObjects;
+
 procedure recompileDbObjects;
-procedure recompileAndLogDbObjects;
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2);
 
@@ -147,7 +117,7 @@ function concatText(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null) return varchar2;
 
-procedure clearLog;
+procedure clear;
 
 function format(psPattern in varchar2,
                 psParam1  in varchar2 default null,
@@ -198,15 +168,6 @@ procedure pl(
 function tc(pbValue in boolean) return varchar2;
 function toChar(pbValue in boolean) return varchar2;
 
-function thisProgram(pnDepth in integer default null) return varchar2;
-function thisPackage(pnDepth in integer default null) return varchar2;
-function thisFunction(pnDepth in integer default null) return varchar2;
-function thisLine(pnDepth in integer default null) return integer;
-function callingProgram return varchar2;
-function callingPackage return varchar2;
-function callingFunction return varchar2;
-function callingLine return integer;
-
 procedure insertDevLog(rRecDevLog in out TRecDevLog);
 procedure insertDevLogVal(rRecDevLogVal in out TRecDevLogVal);
 procedure insertDevLogMeta(rRecDevLogMeta in out TRecDevLogMeta);
@@ -219,21 +180,25 @@ procedure logGlobals(psLogSid in integer);
 
 function getDynQuery(pnSid in integer) return TRecDynQuery;
 function getDynQuery(psName in varchar2) return TRecDynQuery;
-procedure insertDynQuery(rRecDynQuery in out TRecDynQuery);
-procedure updateDynQuery(rRecDynQuery in out TRecDynQuery);
+function insertDynQuery(rRecDynQuery in out TRecDynQuery) return TRecDynQuery;
+function updateDynQuery(rRecDynQuery in out TRecDynQuery) return TRecDynQuery;
 
 function getDynVar(pnSid in integer) return TRecDynVar;
 function getDynVar(psName in varchar2) return TRecDynVar;
-procedure insertDynVar(rRecDynVar in out TRecDynVar);
-procedure updateDynVar(rRecDynVar in out TRecDynVar);
+function insertDynVar(rRecDynVar in out TRecDynVar) return TRecDynVar;
+function updateDynVar(rRecDynVar in out TRecDynVar) return TRecDynVar;
 
 function getDynQuerySid(psName in varchar2) return integer;
 function getDynVarSid(psName in varchar2) return integer;
 
-function getSValue(pnSid in integer) return varchar2;
-function getSValue(psName in varchar2) return varchar2;
-procedure setSValue(pnSid in integer, psValue in varchar2);
-procedure setSValue(psName in varchar2, psValue in varchar2);
+function thisProgram(pnDepth in integer default null) return varchar2;
+function thisPackage(pnDepth in integer default null) return varchar2;
+function thisFunction(pnDepth in integer default null) return varchar2;
+function thisLine(pnDepth in integer default null) return integer;
+function callingProgram return varchar2;
+function callingPackage return varchar2;
+function callingFunction return varchar2;
+function callingLine return integer;
 
 procedure log(
   psText1  in varchar2 default null,
