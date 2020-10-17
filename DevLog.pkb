@@ -400,6 +400,55 @@ begin
     rRecDevLog.dlgtext17,  rRecDevLog.dlgtext18,  rRecDevLog.dlgtext19, rRecDevLog.dlgtext20);
 end insertDevLog;
 
+function getDevLog(pnSid in integer) return TRecDevLog
+is
+  cursor curGet(nSid integer) is
+    select dlgsid,
+           dlgcreuser, dlgcredate,
+           dlgmoduser, dlgmoddate,
+           dlgtext1,   dlgtext2,   dlgtext3,  dlgtext4,
+           dlgtext5,   dlgtext6,   dlgtext7,  dlgtext8,
+           dlgtext9,   dlgtext10,  dlgtext11, dlgtext12,
+           dlgtext13,  dlgtext14,  dlgtext15, dlgtext16,
+           dlgtext17,  dlgtext18,  dlgtext19, dlgtext20
+      from dev_log
+     where dlgsid = nSid;
+  vRecDevLog TRecDevLog;
+begin
+  open curGet(pnSid);
+  fetch curGet into vRecDevLog;
+  close curGet;
+  return vRecDevLog;
+end getDevLog;
+
+procedure updateDevLog(rRecDevLog in out TRecDevLog)
+is
+begin
+  rRecDevLog.dlgmoduser := user;
+  rRecDevLog.dlgmoddate := sysdate;
+
+  update dev_log set (
+      dlgcreuser, dlgcredate,
+      dlgmoduser, dlgmoddate,
+      dlgtext1,   dlgtext2,   dlgtext3,  dlgtext4,
+      dlgtext5,   dlgtext6,   dlgtext7,  dlgtext8,
+      dlgtext9,   dlgtext10,  dlgtext11, dlgtext12,
+      dlgtext13,  dlgtext14,  dlgtext15, dlgtext16,
+      dlgtext17,  dlgtext18,  dlgtext19, dlgtext20
+  ) = (
+    select
+      rRecDevLog.dlgcreuser, rRecDevLog.dlgcredate,
+      rRecDevLog.dlgmoduser, rRecDevLog.dlgmoddate,
+      rRecDevLog.dlgtext1,   rRecDevLog.dlgtext2,   rRecDevLog.dlgtext3,  rRecDevLog.dlgtext4,
+      rRecDevLog.dlgtext5,   rRecDevLog.dlgtext6,   rRecDevLog.dlgtext7,  rRecDevLog.dlgtext8,
+      rRecDevLog.dlgtext9,   rRecDevLog.dlgtext10,  rRecDevLog.dlgtext11, rRecDevLog.dlgtext12,
+      rRecDevLog.dlgtext13,  rRecDevLog.dlgtext14,  rRecDevLog.dlgtext15, rRecDevLog.dlgtext16,
+      rRecDevLog.dlgtext17,  rRecDevLog.dlgtext18,  rRecDevLog.dlgtext19, rRecDevLog.dlgtext20
+    from dual
+  )
+  where dlgsid = rRecDevLog.dlgsid;
+end updateDevLog;
+
 procedure insertDevLogVal(rRecDevLogVal in out TRecDevLogVal)
 is
 begin
@@ -462,6 +511,123 @@ begin
   addValue(psLogSid, 'country',  MicAll.getCountry());
   addValue(psLogSid, 'currency', MicAll.getCurrency());
 end logGlobals;
+
+procedure assignDynVars(rsQuery in out varchar2)
+is
+  csDynVarPattern constant varchar2(5) := '<.*?>';
+  vRecDynVar TRecDynVar;
+  vsDynVarName TString;
+  vsReplacement TString;
+begin
+  -- get dyn var from pos. 1 and 1st occurence
+  vsDynVarName := regexp_substr(rsQuery, csDynVarPattern, 1, 1);
+  while vsDynVarName is not null loop
+    -- cut enclosing brackets
+    vRecDynVar := getDynVar(substr(vsDynVarName, 2, length(vsDynVarName) - 2));
+    if vRecDynVar.dyvsid is null then -- not found
+      vsReplacement := ''''||'DynVarNotFound'||'''';
+    else
+      if vRecDynVar.dyvsvalue is not null then
+        vsReplacement := ''''||vRecDynVar.dyvsvalue||'''';
+      elsif vRecDynVar.dyvnvalue is not null then
+        vsReplacement := to_char(vRecDynVar.dyvnvalue);
+      elsif vRecDynVar.dyvdvalue is not null then
+        vsReplacement := ''''||vRecDynVar.dyvdvalue||''''; -- implicit to_char
+      elsif vRecDynVar.dyvbvalue is not null then
+        vsReplacement := vRecDynVar.dyvbvalue;
+      end if;
+    end if;
+
+    rsQuery := replace(rsQuery, vsDynVarName, vsReplacement);
+    vsDynVarName := regexp_substr(rsQuery, csDynVarPattern, 1, 1);
+  end loop;
+end assignDynVars;
+
+procedure assignText(psField in varchar2,
+                     psValue  in varchar2,
+                     rRecDevLog in out TRecDevLog)
+is
+  vsField TString;
+begin
+  vsField := lower(psField);
+  if vsField like '%text1' then
+    rRecDevLog.dlgtext1 := psValue;
+  elsif vsField like '%text2' then
+    rRecDevLog.dlgtext2 := psValue;
+  elsif vsField like '%text3' then
+    rRecDevLog.dlgtext3 := psValue;
+  elsif vsField like '%text4' then
+    rRecDevLog.dlgtext4 := psValue;
+  elsif vsField like '%text5' then
+    rRecDevLog.dlgtext5 := psValue;
+  elsif vsField like '%text6' then
+    rRecDevLog.dlgtext6 := psValue;
+  elsif vsField like '%text7' then
+    rRecDevLog.dlgtext7 := psValue;
+  elsif vsField like '%text8' then
+    rRecDevLog.dlgtext8 := psValue;
+  elsif vsField like '%text9' then
+    rRecDevLog.dlgtext9 := psValue;
+  elsif vsField like '%text10' then
+    rRecDevLog.dlgtext10 := psValue;
+  elsif vsField like '%text11' then
+    rRecDevLog.dlgtext11 := psValue;
+  elsif vsField like '%text12' then
+    rRecDevLog.dlgtext12 := psValue;
+  elsif vsField like '%text13' then
+    rRecDevLog.dlgtext13 := psValue;
+  elsif vsField like '%text14' then
+    rRecDevLog.dlgtext14 := psValue;
+  elsif vsField like '%text15' then
+    rRecDevLog.dlgtext15 := psValue;
+  elsif vsField like '%text16' then
+    rRecDevLog.dlgtext16 := psValue;
+  elsif vsField like '%text17' then
+    rRecDevLog.dlgtext17 := psValue;
+  elsif vsField like '%text18' then
+    rRecDevLog.dlgtext18 := psValue;
+  elsif vsField like '%text19' then
+    rRecDevLog.dlgtext19 := psValue;
+  elsif vsField like '%text20' then
+    rRecDevLog.dlgtext20 := psValue;
+  end if;
+end assignText;
+
+procedure logDynVars(pnLogSid in integer)
+is
+  cursor curActiveDynQueries is
+    select dyqsid
+      from dev_log_dyn_query
+     where dyqactive = csTrueFlag
+       and dyqquery is not null
+       and dyqfield is not null
+     order by dyqname;
+  vRecDevLog TRecDevLog;
+  vRecDynQuery TRecDynQuery;
+  vsQuery TString;
+  vsQueryResult TString;
+begin
+  for rowActiveDynQuery in curActiveDynQueries() loop
+    vRecDynQuery := getDynQuery(rowActiveDynQuery.dyqsid);
+    vsQuery := vRecDynQuery.dyqquery;
+    assignDynVars(vsQuery);
+
+    begin
+      execute immediate 'begin :result := '||vsQuery||'; end;'
+        using out vsQueryResult;
+    exception
+      when others then
+        vsQueryResult := 'Error: '||sqlerrm
+          ||' Query: '||vsQuery;
+    end;
+
+    vRecDevLog := getDevLog(pnLogSid);
+    assignText(psField => vRecDynQuery.dyqfield,
+               psValue => vsQueryResult,
+               rRecDevLog => vRecDevLog);
+    updateDevLog(vRecDevLog);
+  end loop;
+end logDynVars;
 
 function getDynQuery(pnSid in integer) return TRecDynQuery
 is
@@ -753,6 +919,7 @@ begin
   vRecDevLogMeta.dlmcallstack   := dbms_utility.format_call_stack;
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
+  logDynVars(vRecDevLog.dlgsid);
   commit;
 end log;
 

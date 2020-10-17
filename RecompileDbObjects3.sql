@@ -1,8 +1,14 @@
 set serveroutput on
 
---begin DevLog.resetCompileCount(); end;
+--begin
+--  DBMS_UTILITY.COMPILE_SCHEMA('BUILD');
+--end;
 --/
-begin DevLog.setCompileCount(3); end;
+
+set serveroutput on
+begin DevLog.pl(DevLog.countInvalidDbObjects()); end;
+/
+begin DevLog.setCompileCount(1); end;
 /
 
 begin DevLog.recompileAndLogDbObjects; end;

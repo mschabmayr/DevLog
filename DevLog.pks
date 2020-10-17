@@ -109,11 +109,37 @@ cursor curInvalidDbObjects is
          'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
          'VIEW', 'ALTER VIEW '||object_name||' COMPILE',
          'MATERIALIZED VIEW', 'ALTER MATERIALIZED VIEW '||object_name||' COMPILE',
-         'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement
+         'TRIGGER', 'ALTER TRIGGER "'||object_name||'" COMPILE',
+         'PROCEDURE', 'ALTER PROCEDURE '||object_name||' COMPILE',
+         'FUNCTION', 'ALTER FUNCTION '||object_name||' COMPILE',
+         'QUEUE', 'dbms_aqadm.start_queue('''||object_name||''');',
+         'JAVA CLASS', 'ALTER JAVA CLASS "'||object_name||'" COMPILE',
+         'JAVA SOURCE', 'ALTER JAVA SOURCE "'||object_name||'" COMPILE',
+         'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement,
+         decode(object_type,
+         'PACKAGE', 3,
+         'PACKAGE BODY', 5,
+         'TYPE', 4,
+         'TYPE BODY', 6,
+         'VIEW', 1,
+         'MATERIALIZED VIEW', 2,
+         7) compile_order
+         
     from user_objects
    where status != 'VALID'
      --and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
-   order by object_name, object_type;
+     and object_name not in ( -- blacklist
+           'KSDCAGCHECKSACHNUMMER',
+           'KSDCAGCheckSachnummer',
+           'KSMAGNABMWX3AUSTRITT',
+           'MICCUSTKSINFDESAP',
+           'MICCUSTKSITGINITIALLOADES',
+           'MICDPSFUZZY',
+           'MICKSDAGTARIFLOAD',
+           'MICKSDAGTARIFLOADAIP',
+           'MICKSDTNAININTERFACE',
+           'MICSAP2')
+   order by compile_order, object_name, object_type;
 
 subtype TTypeDbObject is curInvalidDbObjects%rowtype;
 type TTabDbObjects is table of TTypeDbObject;
