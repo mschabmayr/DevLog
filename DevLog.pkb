@@ -3,6 +3,8 @@ create or replace package body DevLog is
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
 
+-- TODO: rework package structure
+
 function countInvalidDbObjects return integer
 is
 begin
@@ -13,6 +15,10 @@ function getInvalidDbObjects return TTabDbObjects
 is
   vTabDbObjects TTabDbObjects;
 begin
+  if curInvalidDbObjects%isopen then
+    close curInvalidDbObjects;
+  end if;
+
   open curInvalidDbObjects;
   fetch curInvalidDbObjects bulk collect into vTabDbObjects;
   close curInvalidDbObjects;
@@ -66,9 +72,30 @@ begin
   pl('end of recompileDbObjects');
 end;
 
+procedure setCompileCount(pnCount in integer default 3)
+is
+  csTryCountPrefix constant varchar2(4) := 'TRY_';
+begin
+  update dev_log_dyn_var
+     set dyvnvalue = pnCount,
+         dyvmoduser = user,
+         dyvmoddate = sysdate
+   where dyvname like csTryCountPrefix||'%';
+end setCompileCount;
+
+procedure resetCompileCount
+is
+  csTryCountPrefix constant varchar2(4) := 'TRY_';
+begin
+  delete
+    from dev_log_dyn_var
+   where dyvname like csTryCountPrefix||'%';
+end resetCompileCount;
+
 procedure recompileAndLogDbObjects
 is
   csTryCountPrefix constant varchar2(4) := 'TRY_';
+  cnTryCount constant number := 3;
   vTabDbObjects TTabDbObjects;
   vTypeDbObject TTypeDbObject;
   vRecDynVar TRecDynVar;
@@ -82,13 +109,16 @@ begin
     vRecDynVar := getDynVar(vsTryCountKey);
     if vRecDynVar.dyvsid is null then
       vRecDynVar.dyvname := vsTryCountKey;
-      vRecDynVar.dyvnvalue := 3;
+      vRecDynVar.dyvnvalue := cnTryCount;
       insertDynVar(vRecDynVar);
     end if;
+    --pl('invalid: '||vTabDbObjects.count
+    --    ||' - compiling: '||vTypeDbObject.compile_statement);
+    --pl('number of tries: '||vRecDynVar.dyvnvalue);
     if vRecDynVar.dyvnvalue > 0 then
-
       pl('invalid: '||vTabDbObjects.count
         ||' - compiling: '||vTypeDbObject.compile_statement);
+
       begin
         execute immediate vTypeDbObject.compile_statement;
       exception
@@ -513,7 +543,7 @@ is
            dyvcreuser, dyvcredate,
            dyvmoduser, dyvmoddate,
            dyvname,    dyvdescription, dyvsvalue,
-           dyvsvalue,  dyvsvalue,  dyvsvalue
+           dyvnvalue,  dyvdvalue,  dyvbvalue
       from dev_log_dyn_var
      where dyvsid = nSid;
   vRecDynVar TRecDynVar;

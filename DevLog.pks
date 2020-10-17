@@ -112,7 +112,7 @@ cursor curInvalidDbObjects is
          'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement
     from user_objects
    where status != 'VALID'
-     and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
+     --and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
    order by object_name, object_type;
 
 subtype TTypeDbObject is curInvalidDbObjects%rowtype;
@@ -121,6 +121,8 @@ type TTabDbObjects is table of TTypeDbObject;
 function countInvalidDbObjects return integer;
 function getInvalidDbObjects return TTabDbObjects;
 procedure recompileDbObjects;
+procedure setCompileCount(pnCount in integer default 3);
+procedure resetCompileCount;
 procedure recompileAndLogDbObjects;
 
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2);

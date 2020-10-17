@@ -1,6 +1,9 @@
 set serveroutput on
 
--- TODO reset counter
+--begin DevLog.resetCompileCount(); end;
+--/
+begin DevLog.setCompileCount(3); end;
+/
 
 begin DevLog.recompileAndLogDbObjects; end;
 /
