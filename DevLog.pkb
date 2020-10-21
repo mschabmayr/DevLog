@@ -502,14 +502,15 @@ end addValue;
 
 procedure logGlobals(psLogSid in integer)
 is
-begin
+begin /*
   addValue(psLogSid, 'company',  MicAll.getCompany());
   addValue(psLogSid, 'plant',    MicAll.getPlant());
   addValue(psLogSid, 'language', MicAll.getSpr());
   addValue(psLogSid, 'system',   MicAll.getSystem());
   addValue(psLogSid, 'user',     MicAll.getDatabaseUser());
   addValue(psLogSid, 'country',  MicAll.getCountry());
-  addValue(psLogSid, 'currency', MicAll.getCurrency());
+  addValue(psLogSid, 'currency', MicAll.getCurrency()); */
+  null;
 end logGlobals;
 
 procedure assignDynVars(rsQuery in out varchar2)
@@ -886,7 +887,7 @@ procedure log(
   psText20 in varchar2 default null,
   pnDepth  in number   default null) -- filled, if called from other log functions (to be skipped)
 is
-  pragma autonomous_transaction;
+  --pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
   vRecDevLogMeta TRecDevLogMeta;
 begin
@@ -920,7 +921,7 @@ begin
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
   logDynVars(vRecDevLog.dlgsid);
-  commit;
+  --commit;
 end log;
 
 procedure bye        is begin log(psText1=>'bye',        pnDepth=>cnCallerDepth); end;

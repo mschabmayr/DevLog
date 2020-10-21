@@ -30,7 +30,7 @@ begin
   vTypeImportShipment := CustImportShipment.find(101);
   vTypeImportShipment.setBelKz(null);
   vTypeImportShipment.persist();
-  commit;
+  --commit;
 
   DevLog.log('a');
   DevLog.log('bb');
@@ -38,7 +38,7 @@ begin
 
   vTypeImportShipment.setBelKz('A');
   vTypeImportShipment.persist();
-  commit;
+  --commit;
 
   DevLog.log('dddd');
   DevLog.log('eeeee');

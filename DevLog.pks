@@ -139,6 +139,7 @@ cursor curInvalidDbObjects is
            'MICKSDAGTARIFLOADAIP',
            'MICKSDTNAININTERFACE',
            'MICSAP2')
+     --and object_name like '%ALL%'
    order by compile_order, object_name, object_type;
 
 subtype TTypeDbObject is curInvalidDbObjects%rowtype;
