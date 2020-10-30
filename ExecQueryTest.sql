@@ -1,3 +1,28 @@
+
+delete from dev_log;
+select * from DevLogView;
+
+delete from dev_log_dyn_var where dyvname = 'HW';
+insert into dev_log_dyn_var(dyvsid, dyvname, dyvsvalue)
+values(dev_log_dyn_var_seq.nextval, 'HW', 'HelloWorld');
+
+delete from dev_log_dyn_var where dyvname = 'TODAY';
+insert into dev_log_dyn_var(dyvsid, dyvname, dyvdvalue)
+values(dev_log_dyn_var_seq.nextval, 'TODAY', sysdate);
+
+delete from dev_log_dyn_var where dyvname = 'IS_SID';
+insert into dev_log_dyn_var(dyvsid, dyvname, dyvnvalue)
+values(dev_log_dyn_var_seq.nextval, 'IS_SID', 101);
+
+delete from dev_log_dyn_query where dyqname = 'IS';
+insert into dev_log_dyn_query(dyqsid, dyqname, dyqfield, dyqactive, dyqquery, dyqcreuser, dyqcredate)
+values(dev_log_dyn_query_seq.nextval, 'IS', 'text4', '1',
+  '''sid/close: ''||CustImportShipment.find(<IS_SID>).getSid()'
+  ||'||''/''||CustImportShipment.find(<IS_SID>).getBelKz()'
+  ||'||''/''||<HW>'
+  ||'||''/''||<TODAY>',
+  user, sysdate);
+
 set serveroutput on
 declare
   vTypeImportShipment CustImportShipment;
@@ -44,27 +69,3 @@ begin
   DevLog.log('eeeee');
 end;
 /
-delete from dev_log;
-select * from DevLogView;
-
-delete from dev_log_dyn_var where dyvname = 'HW';
-insert into dev_log_dyn_var(dyvsid, dyvname, dyvsvalue)
-values(dev_log_dyn_var_seq.nextval, 'HW', 'HelloWorld');
-
-delete from dev_log_dyn_var where dyvname = 'TODAY';
-insert into dev_log_dyn_var(dyvsid, dyvname, dyvdvalue)
-values(dev_log_dyn_var_seq.nextval, 'TODAY', sysdate);
-
-delete from dev_log_dyn_var where dyvname = 'IS_SID';
-insert into dev_log_dyn_var(dyvsid, dyvname, dyvnvalue)
-values(dev_log_dyn_var_seq.nextval, 'IS_SID', 101);
-
-delete from dev_log_dyn_query where dyqname = 'IS';
-insert into dev_log_dyn_query(dyqsid, dyqname, dyqfield, dyqactive, dyqquery, dyqcreuser, dyqcredate)
-values(dev_log_dyn_query_seq.nextval, 'IS', 'text1', '1',
-  '''sid/close: ''||CustImportShipment.find(<IS_SID>).getSid()'
-  ||'||''/''||CustImportShipment.find(<IS_SID>).getBelKz()'
-  ||'||''/''||<HW>'
-  ||'||''/''||<TODAY>',
-  user, sysdate);
-

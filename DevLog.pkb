@@ -887,7 +887,7 @@ procedure log(
   psText20 in varchar2 default null,
   pnDepth  in number   default null) -- filled, if called from other log functions (to be skipped)
 is
-  --pragma autonomous_transaction;
+  pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
   vRecDevLogMeta TRecDevLogMeta;
 begin
@@ -921,7 +921,7 @@ begin
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
   logDynVars(vRecDevLog.dlgsid);
-  --commit;
+  commit;
 end log;
 
 procedure bye        is begin log(psText1=>'bye',        pnDepth=>cnCallerDepth); end;
