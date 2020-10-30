@@ -314,6 +314,11 @@ end toChar;
 function thisProgram(pnDepth in integer default null) return varchar2
 is
 begin
+  -- utl_call_stack.subprogram(1)(1) -> unit of this line
+  -- utl_call_stack.subprogram(1)(2) -> program of this line
+  -- utl_call_stack.subprogram(2)(1) -> unit of the previous line
+  -- utl_call_stack.subprogram(2)(2) -> program of the previous line
+  -- -> return <unit>.<program>
   return utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(nvl(pnDepth, cnProgramDepth)+1));
 exception
   when others then
