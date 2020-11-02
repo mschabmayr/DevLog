@@ -6,7 +6,7 @@ set serveroutput on
 --/
 
 set serveroutput on
-begin DevLog.pl(DevLog.countInvalidDbObjects()); end;
+begin DevLog.pl('Invalid objects: ' || DevLog.countInvalidDbObjects()); end;
 /
 begin DevLog.setCompileCount(1); end;
 /

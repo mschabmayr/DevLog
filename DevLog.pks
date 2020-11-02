@@ -112,7 +112,7 @@ cursor curInvalidDbObjects is
          'TRIGGER', 'ALTER TRIGGER "'||object_name||'" COMPILE',
          'PROCEDURE', 'ALTER PROCEDURE '||object_name||' COMPILE',
          'FUNCTION', 'ALTER FUNCTION '||object_name||' COMPILE',
-         'QUEUE', 'dbms_aqadm.start_queue('''||object_name||''');',
+         'QUEUE', 'begin dbms_aqadm.start_queue('''||object_name||'''); end;',
          'JAVA CLASS', 'ALTER JAVA CLASS "'||object_name||'" COMPILE',
          'JAVA SOURCE', 'ALTER JAVA SOURCE "'||object_name||'" COMPILE',
          'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement,
