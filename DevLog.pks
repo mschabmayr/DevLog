@@ -247,6 +247,12 @@ procedure addValue(psLogSid in integer,
 
 procedure logGlobals(psLogSid in integer);
 
+procedure assignDynVars(rsQuery in out varchar2);
+procedure assignText(psField in varchar2,
+                     psValue  in varchar2,
+                     rRecDevLog in out TRecDevLog);
+procedure logDynVars(pnLogSid in integer);
+
 function getDynQuery(pnSid in integer) return TRecDynQuery;
 function getDynQuery(psName in varchar2) return TRecDynQuery;
 procedure insertDynQuery(rRecDynQuery in out TRecDynQuery);

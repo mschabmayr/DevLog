@@ -3,8 +3,6 @@ create or replace package body DevLog is
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
 
--- TODO: rework package structure
-
 function countInvalidDbObjects return integer
 is
 begin
@@ -161,7 +159,7 @@ function concatText(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null) return varchar2
 is
-  vsText varchar2(4000);
+  vsText TString;
 begin
   vsText := psText1;
   concatIfNotNull(vsText, psText2);
@@ -301,14 +299,13 @@ end tc;
 
 function toChar(pbValue in boolean) return varchar2
 is
-  vsValue varchar2(5) := 'false';
 begin
-  if pbValue is null then
-    vsValue := 'null';
-  elsif pbValue then
-    vsValue := 'true';
+  if pbValue then
+    return csTrue; -- 'true'
+  elsif not pbValue then
+    return csFalse; -- 'false'
   end if;
-  return vsValue;
+  return csNull; -- 'null', pbValue is null
 end toChar;
 
 function thisProgram(pnDepth in integer default null) return varchar2
@@ -845,28 +842,6 @@ is
 begin
   setSValue(getDynVarSid(psName), psValue);
 end setSValue;
-
-/*
-function getSValue(pnSid in integer) return varchar2;
-function getSValue(psName in varchar2) return varchar2;
-procedure setSValue(pnSid in integer, psValue in varchar2);
-procedure setSValue(pnName in varchar2, psValue in varchar2);
-
-function getNValue(pnSid in integer) return number;
-function getNValue(psName in varchar2) return number;
-procedure setNValue(pnSid in integer, pnValue in number);
-procedure setNValue(pnName in varchar2, pnValue in number);
-
-function getDValue(pnSid in integer) return date;
-function getDValue(psName in varchar2) return date;
-procedure setDValue(pnSid in integer, pdValue in date);
-procedure setDValue(pnName in varchar2, pdValue in date);
-
-function getBValue(pnSid in integer) return boolean;
-function getBValue(psName in varchar2) return boolean;
-procedure setBValue(pnSid in integer, pbValue in boolean);
-procedure setBValue(pnName in varchar2, pbValue in boolean);
-*/
 
 procedure log(
   psText1  in varchar2 default null,
