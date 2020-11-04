@@ -507,15 +507,14 @@ end addValue;
 
 procedure logGlobals(psLogSid in integer)
 is
-begin /*
+begin
   addValue(psLogSid, 'company',  MicAll.getCompany());
   addValue(psLogSid, 'plant',    MicAll.getPlant());
   addValue(psLogSid, 'language', MicAll.getSpr());
   addValue(psLogSid, 'system',   MicAll.getSystem());
   addValue(psLogSid, 'user',     MicAll.getDatabaseUser());
   addValue(psLogSid, 'country',  MicAll.getCountry());
-  addValue(psLogSid, 'currency', MicAll.getCurrency()); */
-  null;
+  addValue(psLogSid, 'currency', MicAll.getCurrency());
 end logGlobals;
 
 procedure assignDynVars(rsQuery in out varchar2)

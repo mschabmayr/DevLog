@@ -16,6 +16,50 @@ csTrueFlag constant varchar2(1) := '1';
 csFalseFlag constant varchar2(1) := '0';
 
 cnVarcharDbMaxLen constant integer := 4000;
+
+cursor curInvalidDbObjects is
+  select object_name,
+         object_type,
+         decode(object_type,
+         'PACKAGE', 'ALTER PACKAGE '||object_name||' COMPILE PACKAGE', 
+         'PACKAGE BODY', 'ALTER PACKAGE '||object_name||' COMPILE BODY', 
+         'TYPE', 'ALTER TYPE '||object_name||' COMPILE SPECIFICATION',
+         'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
+         'VIEW', 'ALTER VIEW '||object_name||' COMPILE',
+         'MATERIALIZED VIEW', 'ALTER MATERIALIZED VIEW '||object_name||' COMPILE',
+         'TRIGGER', 'ALTER TRIGGER "'||object_name||'" COMPILE',
+         'PROCEDURE', 'ALTER PROCEDURE '||object_name||' COMPILE',
+         'FUNCTION', 'ALTER FUNCTION '||object_name||' COMPILE',
+         'QUEUE', 'begin dbms_aqadm.start_queue('''||object_name||'''); end;',
+         'JAVA CLASS', 'ALTER JAVA CLASS "'||object_name||'" COMPILE',
+         'JAVA SOURCE', 'ALTER JAVA SOURCE "'||object_name||'" COMPILE',
+         'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement,
+         decode(object_type,
+         'PACKAGE', 3,
+         'PACKAGE BODY', 5,
+         'TYPE', 4,
+         'TYPE BODY', 6,
+         'VIEW', 1,
+         'MATERIALIZED VIEW', 2,
+         7) compile_order
+         
+    from user_objects
+   where status != 'VALID'
+     --and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
+     and object_name not in ( -- blacklist
+           'KSDCAGCHECKSACHNUMMER',
+           'KSDCAGCheckSachnummer',
+           'KSMAGNABMWX3AUSTRITT',
+           'MICCUSTKSINFDESAP',
+           'MICCUSTKSITGINITIALLOADES',
+           'MICDPSFUZZY',
+           'MICKSDAGTARIFLOAD',
+           'MICKSDAGTARIFLOADAIP',
+           'MICKSDTNAININTERFACE',
+           'MICSAP2')
+     --and object_name like '%ALL%'
+   order by compile_order, object_name, object_type;
+
 subtype TString is varchar2(cnVarcharDbMaxLen);
 type TTabStrings is table of TString;
 
@@ -98,49 +142,6 @@ type TRecDynVar is record (
   dyvdvalue      dev_log_dyn_var.dyvdvalue%type,
   dyvbvalue      dev_log_dyn_var.dyvbvalue%type
 );
-
-cursor curInvalidDbObjects is
-  select object_name,
-         object_type,
-         decode(object_type,
-         'PACKAGE', 'ALTER PACKAGE '||object_name||' COMPILE PACKAGE', 
-         'PACKAGE BODY', 'ALTER PACKAGE '||object_name||' COMPILE BODY', 
-         'TYPE', 'ALTER TYPE '||object_name||' COMPILE SPECIFICATION',
-         'TYPE BODY', 'ALTER TYPE '||object_name||' COMPILE BODY',
-         'VIEW', 'ALTER VIEW '||object_name||' COMPILE',
-         'MATERIALIZED VIEW', 'ALTER MATERIALIZED VIEW '||object_name||' COMPILE',
-         'TRIGGER', 'ALTER TRIGGER "'||object_name||'" COMPILE',
-         'PROCEDURE', 'ALTER PROCEDURE '||object_name||' COMPILE',
-         'FUNCTION', 'ALTER FUNCTION '||object_name||' COMPILE',
-         'QUEUE', 'begin dbms_aqadm.start_queue('''||object_name||'''); end;',
-         'JAVA CLASS', 'ALTER JAVA CLASS "'||object_name||'" COMPILE',
-         'JAVA SOURCE', 'ALTER JAVA SOURCE "'||object_name||'" COMPILE',
-         'unexpected object_type of name/type: '||object_name||'/'||object_type) compile_statement,
-         decode(object_type,
-         'PACKAGE', 3,
-         'PACKAGE BODY', 5,
-         'TYPE', 4,
-         'TYPE BODY', 6,
-         'VIEW', 1,
-         'MATERIALIZED VIEW', 2,
-         7) compile_order
-         
-    from user_objects
-   where status != 'VALID'
-     --and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
-     and object_name not in ( -- blacklist
-           'KSDCAGCHECKSACHNUMMER',
-           'KSDCAGCheckSachnummer',
-           'KSMAGNABMWX3AUSTRITT',
-           'MICCUSTKSINFDESAP',
-           'MICCUSTKSITGINITIALLOADES',
-           'MICDPSFUZZY',
-           'MICKSDAGTARIFLOAD',
-           'MICKSDAGTARIFLOADAIP',
-           'MICKSDTNAININTERFACE',
-           'MICSAP2')
-     --and object_name like '%ALL%'
-   order by compile_order, object_name, object_type;
 
 subtype TTypeDbObject is curInvalidDbObjects%rowtype;
 type TTabDbObjects is table of TTypeDbObject;
