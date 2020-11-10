@@ -45,7 +45,8 @@ cursor curInvalidDbObjects is
          
     from user_objects
    where status != 'VALID'
-     --and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
+     and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
+     --and object_name like '%ALL%'
      and object_name not in ( -- blacklist
            'KSDCAGCHECKSACHNUMMER',
            'KSDCAGCheckSachnummer',
