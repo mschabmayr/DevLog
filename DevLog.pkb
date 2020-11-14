@@ -40,10 +40,10 @@ is
   vnInvalidCount number;
   vnTryCount number := 3;
 begin
-  pl('start of recompileDbObjects');
+  -- pl('start of recompileDbObjects');
   vTabStatements := getCompileStatements();
   vnInvalidCount := vTabStatements.count;
-  pl('invalid count: '||vnInvalidCount);
+  -- pl('invalid count: '||vnInvalidCount);
   while vnInvalidCount > 0 and vnTryCount > 0 loop
     for i in 1..vTabStatements.count loop
       pl('recompiling '||i||'/'||vTabStatements.count||' '||vTabStatements(i));
@@ -62,13 +62,14 @@ begin
     end if;
     vnInvalidCount := vTabStatements.count;
   end loop;
-  pl('end of compilation');
+  -- pl('end of compilation');
   for i in 1..vTabStatements.count loop
-    pl(vTabStatements(i));
+    null;
+    -- pl(vTabStatements(i));
   end loop;
-  pl(vTabStatements.count||' remaining invalid');
+  -- pl(vTabStatements.count||' remaining invalid');
   pl('end of recompileDbObjects');
-end;
+end recompileDbObjects;
 
 procedure setCompileCount(pnCount in integer default 3)
 is
@@ -301,14 +302,23 @@ function toChar(pbValue in boolean) return varchar2
 is
 begin
   if pbValue then
-    return csTrue; -- 'true'
+    return csTrue; -- 'True'
   elsif not pbValue then
-    return csFalse; -- 'false'
+    return csFalse; -- 'False'
   end if;
-  return csNull; -- 'null', pbValue is null
+  return csNull; -- 'Null'
 end toChar;
 
-function thisProgram(pnDepth in integer default null) return varchar2
+function thisOwner(pnDepth in integer default null) return varchar2
+is
+begin
+  return utl_call_stack.owner(coalesce(pnDepth, cnProgramDepth)+1);
+exception
+  when others then
+    return 'unknown';
+end;
+
+function thisUnitSubprogram(pnDepth in integer default null) return varchar2
 is
 begin
   -- utl_call_stack.subprogram(1)(1) -> unit of this line
@@ -316,65 +326,67 @@ begin
   -- utl_call_stack.subprogram(2)(1) -> unit of the previous line
   -- utl_call_stack.subprogram(2)(2) -> program of the previous line
   -- -> return <unit>.<program>
-  return utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(nvl(pnDepth, cnProgramDepth)+1));
+  return utl_call_stack.concatenate_subprogram(utl_call_stack.subprogram(coalesce(pnDepth, cnProgramDepth)+1));
 exception
   when others then
     return 'unknown';
-end;
+end thisUnitSubprogram;
 
-function thisPackage(pnDepth in integer default null) return varchar2
+function thisUnit(pnDepth in integer default null) return varchar2
 is
-  vsSubprogram varchar2(100);
 begin
-  vsSubprogram := thisProgram(pnDepth=>nvl(pnDepth, cnProgramDepth)+1);
-  if instr(vsSubprogram,'.') <> 0 then
-    return substr(vsSubprogram, 0, instr(vsSubprogram,'.')-1);
-  end if;
-  return vsSubprogram;
-end thisPackage;
+  return utl_call_stack.subprogram(coalesce(pnDepth, cnProgramDepth)+1)(1);
+exception
+  when others then
+    return 'unknown';
+end thisUnit;
 
-function thisFunction(pnDepth in integer default null) return varchar2
+function thisSubprogram(pnDepth in integer default null) return varchar2
 is
-  vsSubprogram varchar2(100);
 begin
-  vsSubprogram := thisProgram(pnDepth=>nvl(pnDepth, cnProgramDepth)+1);
-  if instr(vsSubprogram,'.') <> 0 then
-    return substr(vsSubprogram, instr(vsSubprogram,'.')+1);
-  end if;
-  return vsSubprogram;
-end thisFunction;
+  return utl_call_stack.subprogram(coalesce(pnDepth, cnProgramDepth)+1)(2);
+exception
+  when others then
+    return 'unknown';
+end thisSubprogram;
 
 function thisLine(pnDepth in integer default null) return integer
 is
 begin
-  return utl_call_stack.unit_line(nvl(pnDepth, cnProgramDepth)+1);
+  return utl_call_stack.unit_line(coalesce(pnDepth, cnProgramDepth)+1);
 exception
   when others then
     return null;
 end thisLine;
 
-function callingProgram return varchar2
+function callingOwner return varchar2
 is
 begin
-  return thisProgram(pnDepth=>cnNextCallerDepth);
-end callingProgram;
+  return thisOwner(pnDepth => cnNextCallerDepth);
+end callingOwner;
 
-function callingPackage return varchar2
+function callingUnitSubprogram return varchar2
 is
 begin
-  return thisPackage(pnDepth=>cnNextCallerDepth);
-end callingPackage;
+  return thisUnitSubprogram(pnDepth => cnNextCallerDepth);
+end callingUnitSubprogram;
 
-function callingFunction return varchar2
+function callingUnit return varchar2
 is
 begin
-  return thisFunction(pnDepth=>cnNextCallerDepth);
-end callingFunction;
+  return thisUnit(pnDepth => cnNextCallerDepth);
+end callingUnit;
+
+function callingSubprogram return varchar2
+is
+begin
+  return thisSubprogram(pnDepth => cnNextCallerDepth);
+end callingSubprogram;
 
 function callingLine return integer
 is
 begin
-  return thisLine(pnDepth=>cnNextCallerDepth);
+  return thisLine(pnDepth => cnNextCallerDepth);
 end callingLine;
 
 procedure insertDevLog(rRecDevLog in out TRecDevLog)
@@ -866,7 +878,7 @@ procedure log(
   psText20 in varchar2 default null,
   pnDepth  in number   default null) -- filled, if called from other log functions (to be skipped)
 is
-  pragma autonomous_transaction;
+  --pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
   vRecDevLogMeta TRecDevLogMeta;
 begin
@@ -892,25 +904,25 @@ begin
   vRecDevLog.dlgtext20 := psText20;
   insertDevLog(vRecDevLog);
   vRecDevLogMeta.dlmdlgsid      := vRecDevLog.dlgsid;
-  vRecDevLogMeta.dlmprogram     := thisProgram(pnDepth => nvl(pnDepth+1, cnCallerDepth)); -- skip log function
+  vRecDevLogMeta.dlmprogram     := thisUnitSubprogram(pnDepth => nvl(pnDepth+1, cnCallerDepth)); -- skip log function
   vRecDevLogMeta.dlmprogramline := thisLine(   pnDepth => nvl(pnDepth+1, cnCallerDepth));
-  vRecDevLogMeta.dlmcaller      := thisProgram(pnDepth => nvl(pnDepth+2, cnCallerDepth+1));
+  vRecDevLogMeta.dlmcaller      := thisUnitSubprogram(pnDepth => nvl(pnDepth+2, cnCallerDepth+1));
   vRecDevLogMeta.dlmcallerline  := thisLine(   pnDepth => nvl(pnDepth+2, cnCallerDepth+1));
   vRecDevLogMeta.dlmcallstack   := dbms_utility.format_call_stack;
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
   logDynVars(vRecDevLog.dlgsid);
-  commit;
+  --commit;
 end log;
 
-procedure bye        is begin log(psText1=>'bye',        pnDepth=>cnCallerDepth); end;
-procedure ending     is begin log(psText1=>'ending',     pnDepth=>cnCallerDepth); end;
-procedure ex         is begin log(psText1=>'ex',         pnDepth=>cnCallerDepth); end;
-procedure help       is begin log(psText1=>'help',       pnDepth=>cnCallerDepth); end;
-procedure hi         is begin log(psText1=>'hi',         pnDepth=>cnCallerDepth); end;
-procedure impossible is begin log(psText1=>'impossible', pnDepth=>cnCallerDepth); end;
-procedure mark       is begin log(psText1=>'mark',       pnDepth=>cnCallerDepth); end;
-procedure starting   is begin log(psText1=>'starting',   pnDepth=>cnCallerDepth); end;
+procedure bye        is begin log(psText1 => 'bye',        pnDepth => cnCallerDepth); end;
+procedure ending     is begin log(psText1 => 'ending',     pnDepth => cnCallerDepth); end;
+procedure ex         is begin log(psText1 => 'ex',         pnDepth => cnCallerDepth); end;
+procedure help       is begin log(psText1 => 'help',       pnDepth => cnCallerDepth); end;
+procedure hi         is begin log(psText1 => 'hi',         pnDepth => cnCallerDepth); end;
+procedure impossible is begin log(psText1 => 'impossible', pnDepth => cnCallerDepth); end;
+procedure mark       is begin log(psText1 => 'mark',       pnDepth => cnCallerDepth); end;
+procedure starting   is begin log(psText1 => 'starting',   pnDepth => cnCallerDepth); end;
 
 procedure log(
   psText1  in varchar2 default null,

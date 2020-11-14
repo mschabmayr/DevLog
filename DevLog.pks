@@ -9,9 +9,9 @@ cnProgramDepth constant number := 1;
 cnCallerDepth constant number := 2;
 cnNextCallerDepth constant number := 3;
 
-csTrue constant varchar2(4) := 'true';
-csFalse constant varchar2(5) := 'false';
-csNull constant varchar2(4) := 'null';
+csTrue constant varchar2(4) := 'True';
+csFalse constant varchar2(5) := 'False';
+csNull constant varchar2(4) := 'Null';
 csTrueFlag constant varchar2(1) := '1';
 csFalseFlag constant varchar2(1) := '0';
 
@@ -231,13 +231,16 @@ procedure pl(
 function tc(pbValue in boolean) return varchar2;
 function toChar(pbValue in boolean) return varchar2;
 
-function thisProgram(pnDepth in integer default null) return varchar2;
-function thisPackage(pnDepth in integer default null) return varchar2;
-function thisFunction(pnDepth in integer default null) return varchar2;
+function thisOwner(pnDepth in integer default null) return varchar2;
+function thisUnitSubprogram(pnDepth in integer default null) return varchar2;
+function thisUnit(pnDepth in integer default null) return varchar2;
+function thisSubprogram(pnDepth in integer default null) return varchar2;
 function thisLine(pnDepth in integer default null) return integer;
-function callingProgram return varchar2;
-function callingPackage return varchar2;
-function callingFunction return varchar2;
+
+function callingOwner return varchar2;
+function callingUnitSubprogram return varchar2;
+function callingUnit return varchar2;
+function callingSubprogram return varchar2;
 function callingLine return integer;
 
 procedure insertDevLog(rRecDevLog in out TRecDevLog);
