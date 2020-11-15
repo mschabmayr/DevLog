@@ -180,8 +180,6 @@ function concatText(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null) return varchar2;
 
-procedure clearLog;
-
 function format(psPattern in varchar2,
                 psParam1  in varchar2 default null,
                 psParam2  in varchar2 default null,
@@ -203,6 +201,46 @@ function format(psPattern in varchar2,
                 psParam18 in varchar2 default null,
                 psParam19 in varchar2 default null,
                 psParam20 in varchar2 default null) return varchar2;
+
+procedure append(rsString  in out varchar2,
+                 psParam1  in     varchar2,
+                 psParam2  in     varchar2 default null,
+                 psParam3  in     varchar2 default null,
+                 psParam4  in     varchar2 default null,
+                 psParam5  in     varchar2 default null,
+                 psParam6  in     varchar2 default null,
+                 psParam7  in     varchar2 default null,
+                 psParam8  in     varchar2 default null,
+                 psParam9  in     varchar2 default null,
+                 psParam10 in     varchar2 default null);
+
+procedure appendIfSet(rsString  in out varchar2,
+                      psTest    in     varchar2,
+                      psParam1  in     varchar2,
+                      psParam2  in     varchar2 default null,
+                      psParam3  in     varchar2 default null,
+                      psParam4  in     varchar2 default null,
+                      psParam5  in     varchar2 default null,
+                      psParam6  in     varchar2 default null,
+                      psParam7  in     varchar2 default null,
+                      psParam8  in     varchar2 default null,
+                      psParam9  in     varchar2 default null,
+                      psParam10 in     varchar2 default null);
+
+function join(psDelimiter in varchar2 default null,
+              pTabStrings in TTabStrings)
+return varchar2;
+
+function join(psValue1  in varchar2,
+              psValue2  in varchar2,
+              psValue3  in varchar2 default null,
+              psValue4  in varchar2 default null,
+              psValue5  in varchar2 default null,
+              psValue6  in varchar2 default null,
+              psValue7  in varchar2 default null,
+              psValue8  in varchar2 default null,
+              psValue9  in varchar2 default null,
+              psValue10 in varchar2 default null) return varchar2;
 
 procedure pl(psLine in varchar2);
 
@@ -229,7 +267,8 @@ procedure pl(
   psText20 in varchar2 default null);
 
 function tc(pbValue in boolean) return varchar2;
-function toChar(pbValue in boolean) return varchar2;
+function boolToChar(pbValue in boolean) return varchar2;
+function charToBool(psValue in varchar2) return boolean;
 
 function thisOwner(pnDepth in integer default null) return varchar2;
 function thisUnitSubprogram(pnDepth in integer default null) return varchar2;
@@ -276,6 +315,8 @@ function getSValue(pnSid in integer) return varchar2;
 function getSValue(psName in varchar2) return varchar2;
 procedure setSValue(pnSid in integer, psValue in varchar2);
 procedure setSValue(psName in varchar2, psValue in varchar2);
+
+procedure clearLog;
 
 procedure log(
   psText1  in varchar2 default null,

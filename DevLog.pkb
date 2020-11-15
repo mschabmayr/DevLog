@@ -185,14 +185,6 @@ begin
   return vsText;
 end concatText;
 
-procedure clearLog
-is
-begin
-  delete from dev_log_meta;
-  delete from dev_log_val;
-  delete from dev_log;
-end clearLog;
-
 function format(psPattern in varchar2,
                 psParam1  in varchar2 default null,
                 psParam2  in varchar2 default null,
@@ -238,6 +230,100 @@ begin
     psParam19,
     psParam20);
 end format;
+
+procedure append(rsString  in out varchar2,
+                 psParam1  in     varchar2,
+                 psParam2  in     varchar2 default null,
+                 psParam3  in     varchar2 default null,
+                 psParam4  in     varchar2 default null,
+                 psParam5  in     varchar2 default null,
+                 psParam6  in     varchar2 default null,
+                 psParam7  in     varchar2 default null,
+                 psParam8  in     varchar2 default null,
+                 psParam9  in     varchar2 default null,
+                 psParam10 in     varchar2 default null)
+is
+begin
+  rsString := rsString
+    || psParam1
+    || psParam2
+    || psParam3
+    || psParam4
+    || psParam5
+    || psParam6
+    || psParam7
+    || psParam8
+    || psParam9
+    || psParam10;
+end append;
+
+procedure appendIfSet(rsString  in out varchar2,
+                      psTest    in     varchar2,
+                      psParam1  in     varchar2,
+                      psParam2  in     varchar2 default null,
+                      psParam3  in     varchar2 default null,
+                      psParam4  in     varchar2 default null,
+                      psParam5  in     varchar2 default null,
+                      psParam6  in     varchar2 default null,
+                      psParam7  in     varchar2 default null,
+                      psParam8  in     varchar2 default null,
+                      psParam9  in     varchar2 default null,
+                      psParam10 in     varchar2 default null)
+is
+begin
+  if psTest is null then
+    return;
+  end if;
+  rsString := rsString
+    || psParam1
+    || psParam2
+    || psParam3
+    || psParam4
+    || psParam5
+    || psParam6
+    || psParam7
+    || psParam8
+    || psParam9
+    || psParam10;
+end appendIfSet;
+
+function join(psDelimiter in varchar2 default null,
+              pTabStrings in TTabStrings)
+return varchar2
+is
+  vsJoined TString;
+begin
+  for i in 1 .. pTabStrings.count loop
+    vsJoined := substr(vsJoined || pTabStrings(i) || psDelimiter, 1, cnVarcharDbMaxLen);
+  end loop;
+  return substr(vsJoined, 1, length(vsJoined) - coalesce(length(psDelimiter), 0));
+end join;
+
+function join(psValue1  in varchar2,
+              psValue2  in varchar2,
+              psValue3  in varchar2 default null,
+              psValue4  in varchar2 default null,
+              psValue5  in varchar2 default null,
+              psValue6  in varchar2 default null,
+              psValue7  in varchar2 default null,
+              psValue8  in varchar2 default null,
+              psValue9  in varchar2 default null,
+              psValue10 in varchar2 default null)
+return varchar2
+is
+begin
+  return join(psDelimiter => null,
+              pTabStrings => TTabStrings(psValue1,
+                                        psValue2,
+                                        psValue3,
+                                        psValue4,
+                                        psValue5,
+                                        psValue6,
+                                        psValue7,
+                                        psValue8,
+                                        psValue9,
+                                        psValue10));
+end join;
 
 procedure pl(psLine in varchar2)
 is
@@ -295,19 +381,32 @@ end pl;
 function tc(pbValue in boolean) return varchar2
 is
 begin
-  return toChar(pbValue);
+  return boolToChar(pbValue);
 end tc;
 
-function toChar(pbValue in boolean) return varchar2
+function boolToChar(pbValue in boolean)
+return varchar2
 is
 begin
   if pbValue then
-    return csTrue; -- 'True'
+    return csTrue;
   elsif not pbValue then
-    return csFalse; -- 'False'
+    return csFalse;
   end if;
-  return csNull; -- 'Null'
-end toChar;
+  return csNull;
+end boolToChar;
+
+function charToBool(psValue in varchar2)
+return boolean
+is
+begin
+  if psValue = csTrue then
+    return true;
+  elsif psValue = csFalse then
+    return false;
+  end if;
+  return null;
+end charToBool;
 
 function thisOwner(pnDepth in integer default null) return varchar2
 is
@@ -854,6 +953,14 @@ is
 begin
   setSValue(getDynVarSid(psName), psValue);
 end setSValue;
+
+procedure clearLog
+is
+begin
+  delete from dev_log_meta;
+  delete from dev_log_val;
+  delete from dev_log;
+end clearLog;
 
 procedure log(
   psText1  in varchar2 default null,
