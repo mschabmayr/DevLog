@@ -3,7 +3,7 @@ create or replace package body DevLog is
 -- file: DevLog.pkb
 -- author: Martin Schabmayr
 
-function countInvalidDbObjects return integer
+function countInvalidDbObjects return integer 
 is
 begin
   return getInvalidDbObjects().count;
@@ -13,6 +13,10 @@ function getInvalidDbObjects return TTabDbObjects
 is
   vTabDbObjects TTabDbObjects;
 begin
+  if curInvalidDbObjects%isopen then
+    close curInvalidDbObjects;
+  end if;
+
   if curInvalidDbObjects%isopen then
     close curInvalidDbObjects;
   end if;
@@ -27,6 +31,10 @@ function getCompileStatements return TTabStrings
 is
   vTabStatements TTabStrings := TTabStrings();
 begin
+  if curInvalidDbObjects%isopen then
+    close curInvalidDbObjects;
+  end if;
+
   for rowInvalidDbObject in curInvalidDbObjects loop
     vTabStatements.extend;
     vTabStatements(vTabStatements.count) := rowInvalidDbObject.compile_statement;
@@ -377,6 +385,36 @@ begin
     psText20
   ));
 end pl;
+
+procedure printLogLines(pnLineCount in number default 30)
+is
+  cursor curLogLine is
+    select dlgsid nSid,
+           caller sCaller,
+           program sProgram,
+           dlgtext1 sText1,
+           dlgtext10 sText10,
+           dlgtext11 sText11,
+           dlgtext12 sText12,
+           dlgtext13 sText13,
+           dlgtext14 sText14,
+           dlgtext15 sText15,
+           dlgtext16 sText16
+      from DevLogView
+     fetch first pnLineCount rows only;
+begin
+  if not pnLineCount between 1 and 500 then
+    return;
+  end if;
+  for rowLogLine in curLogLine loop
+    pl(rowLogLine.nSid || '/' || rowLogLine.sCaller
+      || '/' || rowLogLine.sProgram || '/' || rowLogLine.sText1
+      || '/' || rowLogLine.sText10 || '/' || rowLogLine.sText11
+      || '/' || rowLogLine.sText12 || '/' || rowLogLine.sText13
+      || '/' || rowLogLine.sText14 || '/' || rowLogLine.sText15
+      || '/' || rowLogLine.sText16);
+  end loop;
+end printLogLines;
 
 function tc(pbValue in boolean) return varchar2
 is
@@ -985,7 +1023,7 @@ procedure log(
   psText20 in varchar2 default null,
   pnDepth  in number   default null) -- filled, if called from other log functions (to be skipped)
 is
-  --pragma autonomous_transaction;
+  pragma autonomous_transaction;
   vRecDevLog TRecDevLog;
   vRecDevLogMeta TRecDevLogMeta;
 begin
@@ -1019,7 +1057,7 @@ begin
   insertDevLogMeta(vRecDevLogMeta);
   logGlobals(vRecDevLog.dlgsid);
   logDynVars(vRecDevLog.dlgsid);
-  --commit;
+  commit;
 end log;
 
 procedure bye        is begin log(psText1 => 'bye',        pnDepth => cnCallerDepth); end;

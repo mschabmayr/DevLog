@@ -266,6 +266,8 @@ procedure pl(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null);
 
+procedure printLogLines(pnLineCount in number default 30);
+
 function tc(pbValue in boolean) return varchar2;
 function boolToChar(pbValue in boolean) return varchar2;
 function charToBool(psValue in varchar2) return boolean;
