@@ -8,10 +8,10 @@ NOTE: Pull this file into sqldeveloper and execute all (hit F5).
 Don't copy the statements to some other file, because the paths are relative in: start "<path>"
 */
 
-drop package TestDevLog;
-drop package DevLog;
-drop view DevLogView;
-drop view DevLogValView;
+drop package  TestDevLog;
+drop package  DevLog;
+drop view     DevLogView;
+drop view     DevLogValView;
 drop index    i0_dev_log_dyn_query;
 drop table    dev_log_dyn_query;
 drop sequence dev_log_dyn_query_seq;
