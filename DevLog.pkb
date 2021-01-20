@@ -27,6 +27,12 @@ begin
   return vTabDbObjects;
 end getInvalidDbObjects;
 
+procedure printInvalidDbObjectCount
+is
+begin
+  pl('Invalid DB objects: ' || countInvalidDbObjects);
+end printInvalidDbObjectCount;
+
 function getCompileStatements return TTabStrings
 is
   vTabStatements TTabStrings := TTabStrings();
@@ -76,7 +82,7 @@ begin
     -- pl(vTabStatements(i));
   end loop;
   -- pl(vTabStatements.count||' remaining invalid');
-  pl('end of recompileDbObjects');
+  -- pl('end of recompileDbObjects');
 end recompileDbObjects;
 
 procedure setCompileCount(pnCount in integer default 3)

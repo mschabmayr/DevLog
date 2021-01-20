@@ -151,6 +151,7 @@ type TTabDbObjects is table of TTypeDbObject;
 
 function countInvalidDbObjects return integer;
 function getInvalidDbObjects return TTabDbObjects;
+procedure printInvalidDbObjectCount;
 procedure recompileDbObjects;
 procedure setCompileCount(pnCount in integer default 3);
 procedure resetCompileCount;
