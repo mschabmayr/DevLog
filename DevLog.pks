@@ -270,6 +270,7 @@ procedure pl(
 procedure printLogLines(pnLineCount in number default 30);
 
 function tc(pbValue in boolean) return varchar2;
+function toChar(pbValue in boolean) return varchar2;
 function boolToChar(pbValue in boolean) return varchar2;
 function charToBool(psValue in varchar2) return boolean;
 

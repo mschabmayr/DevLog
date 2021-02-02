@@ -428,6 +428,12 @@ begin
   return boolToChar(pbValue);
 end tc;
 
+function toChar(pbValue in boolean) return varchar2
+is
+begin
+  return boolToChar(pbValue);
+end toChar;
+
 function boolToChar(pbValue in boolean)
 return varchar2
 is
