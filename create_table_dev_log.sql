@@ -1,7 +1,6 @@
 -- project: DevLog
 -- file: create_table_dev_log.sql
 -- author: Martin Schabmayr
--- last change: 2019-05-16 07:00
 
 create table dev_log (
   dlgsid     integer not null,

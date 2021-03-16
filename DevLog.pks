@@ -45,9 +45,10 @@ cursor curInvalidDbObjects is
          
     from user_objects
    where status != 'VALID'
-     --and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
+     and object_type in ('PACKAGE', 'PACKAGE BODY', 'TYPE', 'TYPE BODY')
      --and object_name like '%ALL%'
      --and object_name like '%CUST%'
+     --and object_name not like '%CUSTKS%'
      --and object_name like '%CN%'
      and object_name not in ( -- blacklist
            'KSDCAGCHECKSACHNUMMER',
@@ -267,12 +268,16 @@ procedure pl(
   psText19 in varchar2 default null,
   psText20 in varchar2 default null);
 
+procedure printLine(psLine in varchar2);
+
 procedure printLogLines(pnLineCount in number default 30);
 
 function tc(pbValue in boolean) return varchar2;
 function toChar(pbValue in boolean) return varchar2;
 function boolToChar(pbValue in boolean) return varchar2;
 function charToBool(psValue in varchar2) return boolean;
+procedure pb(pbValue in boolean);
+procedure printBool(pbValue in boolean);
 
 function thisOwner(pnDepth in integer default null) return varchar2;
 function thisUnitSubprogram(pnDepth in integer default null) return varchar2;

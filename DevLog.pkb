@@ -149,7 +149,9 @@ end recompileAndLogDbObjects;
 procedure concatIfNotNull(rsText in out varchar2, psText2 in varchar2)
 is
 begin
-  if psText2 is not null then rsText := rsText||', '||psText2; end if;
+  if psText2 is not null then
+    rsText := rsText || ', ' || psText2;
+  end if;
 end concatIfNotNull;
 
 function concatText(
@@ -342,7 +344,7 @@ end join;
 procedure pl(psLine in varchar2)
 is
 begin
-  dbms_output.put_line(psLine);
+  printLine(psLine);
 end pl;
 
 procedure pl(
@@ -368,7 +370,7 @@ procedure pl(
   psText20 in varchar2 default null)
 is
 begin
-  dbms_output.put_line(concatText(
+  printLine(concatText(
     psText1,
     psText2,
     psText3,
@@ -391,6 +393,12 @@ begin
     psText20
   ));
 end pl;
+
+procedure printLine(psLine in varchar2)
+is
+begin
+  printLine(psLine);
+end printLine;
 
 procedure printLogLines(pnLineCount in number default 30)
 is
@@ -457,6 +465,18 @@ begin
   end if;
   return null;
 end charToBool;
+
+procedure pb(pbValue in boolean)
+is
+begin
+  printBool(pbValue);
+end pb;
+
+procedure printBool(pbValue in boolean)
+is
+begin
+  printLine(toChar(pbValue));
+end printBool;
 
 function thisOwner(pnDepth in integer default null) return varchar2
 is
