@@ -397,7 +397,7 @@ end pl;
 procedure printLine(psLine in varchar2)
 is
 begin
-  printLine(psLine);
+  dbms_output.put_line(psLine);
 end printLine;
 
 procedure printLogLines(pnLineCount in number default 30)
