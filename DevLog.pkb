@@ -430,13 +430,15 @@ begin
   end loop;
 end printLogLines;
 
-function tc(pbValue in boolean) return varchar2
+function tc(pbValue in boolean)
+return varchar2
 is
 begin
   return boolToChar(pbValue);
 end tc;
 
-function toChar(pbValue in boolean) return varchar2
+function toChar(pbValue in boolean)
+return varchar2
 is
 begin
   return boolToChar(pbValue);
@@ -453,6 +455,20 @@ begin
   end if;
   return csNull;
 end boolToChar;
+
+function tb(psValue in varchar2)
+return boolean
+is
+begin
+  return charToBool(psValue);
+end tb;
+
+function toBool(psValue in varchar2)
+return boolean
+is
+begin
+  return charToBool(psValue);
+end toBool;
 
 function charToBool(psValue in varchar2)
 return boolean
@@ -557,6 +573,36 @@ is
 begin
   return thisLine(pnDepth => cnNextCallerDepth);
 end callingLine;
+
+function startOwner return varchar2
+is
+begin
+  return thisOwner(pnDepth => utl_call_stack.dynamic_depth());
+end startOwner;
+
+function startUnitSubprogram return varchar2
+is
+begin
+  return thisUnitSubprogram(pnDepth => utl_call_stack.dynamic_depth());
+end startUnitSubprogram;
+
+function startUnit return varchar2
+is
+begin
+  return thisUnit(pnDepth => utl_call_stack.dynamic_depth());
+end startUnit;
+
+function startSubprogram return varchar2
+is
+begin
+  return thisSubprogram(pnDepth => utl_call_stack.dynamic_depth());
+end startSubprogram;
+
+function startLine return integer
+is
+begin
+  return thisLine(pnDepth => utl_call_stack.dynamic_depth());
+end startLine;
 
 procedure insertDevLog(rRecDevLog in out TRecDevLog)
 is

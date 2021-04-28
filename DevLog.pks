@@ -275,7 +275,11 @@ procedure printLogLines(pnLineCount in number default 30);
 function tc(pbValue in boolean) return varchar2;
 function toChar(pbValue in boolean) return varchar2;
 function boolToChar(pbValue in boolean) return varchar2;
+
+function tb(psValue in varchar2) return boolean;
+function toBool(psValue in varchar2) return boolean;
 function charToBool(psValue in varchar2) return boolean;
+
 procedure pb(pbValue in boolean);
 procedure printBool(pbValue in boolean);
 
@@ -290,6 +294,12 @@ function callingUnitSubprogram return varchar2;
 function callingUnit return varchar2;
 function callingSubprogram return varchar2;
 function callingLine return integer;
+
+function startOwner return varchar2;
+function startUnitSubprogram return varchar2;
+function startUnit return varchar2;
+function startSubprogram return varchar2;
+function startLine return integer;
 
 procedure insertDevLog(rRecDevLog in out TRecDevLog);
 procedure insertDevLogVal(rRecDevLogVal in out TRecDevLogVal);
