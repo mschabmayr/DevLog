@@ -1,3 +1,7 @@
+/*
+Note: when using dynamic queries, compile DevLog.log without "pragma autonomous"
+      so changed values of the open transaction are available.
+*/
 
 create or replace function getCnDecById(psId in varchar2)
 return CnSinWinDecHead
