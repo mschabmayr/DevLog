@@ -32,7 +32,7 @@ start "DevLog.pkb"
 start "TestDevLog.pks"
 start "TestDevLog.pkb"
 
-start "insert_dyn_config.sql"
+--start "insert_dyn_config.sql"
 
 -- execute tests
 --start "TestDevLog_pl.sql"
